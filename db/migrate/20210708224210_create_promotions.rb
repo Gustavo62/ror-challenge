@@ -3,7 +3,7 @@ class CreatePromotions < ActiveRecord::Migration[6.1]
     create_table :promotions do |t|
       t.string :name
       t.string :description
-      t.bollean :active
+      t.boolean :active
 
       t.timestamps
     end

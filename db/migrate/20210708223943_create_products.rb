@@ -5,7 +5,7 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.integer :stock
       t.float   :price 
       t.integer :cod_bars
-      t.bollean :active
+      t.boolean :active
 
       t.timestamps
     end
