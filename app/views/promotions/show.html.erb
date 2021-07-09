@@ -1,19 +1,33 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @promotion.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @promotion.description %>
-</p>
-
-<p>
-  <strong>Active:</strong>
-  <%= @promotion.active %>
-</p>
-
-<%= link_to 'Edit', edit_promotion_path(@promotion) %> |
-<%= link_to 'Back', promotions_path %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid"> 
+        <%= link_to "Stock's", root_path, class:"title" %>
+    </div>
+</nav>
+<div class="container"> 
+    <h1>Show Promotion</h1> 
+  <div class="col-12"> 
+    <label class="form-label">Name</label>
+    <input class="form-control" placeholder="<%= @promotion.name %>" readonly="readonly" >
+  </div> 
+  <br>
+  <div class="col-12">
+    <label class="form-label">Description</label>
+    <input class="form-control" placeholder="<%= @promotion.description %>"  readonly="readonly" >
+  </div>  
+  <br>
+  <div class="col-12">
+    <div class="form-check">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if @promotion.active == true %> style="pointer-events:none">
+        <label class="form-check-label" for="gridCheck">
+          Promotion Active?
+        </label>
+      </div>
+    </div>
+  </div>  
+  <br><br>
+  <%= link_to 'Edit', edit_promotion_path(@promotion), class:"btn btn-primary", style:"float:right"%> 
+  <%= link_to 'Back', promotions_path, class:"btn btn-secondary" %>
+</div>
+<style>
+</style>

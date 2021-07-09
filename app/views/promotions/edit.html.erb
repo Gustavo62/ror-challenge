@@ -1,6 +1,12 @@
-<h1>Editing Promotion</h1>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid"> 
+        <%= link_to "Stock's", root_path, class:"title" %>
+    </div>
+</nav>
+<div class="container">
+    <h1>Editing Promotion</h1> 
+    <%= render 'form', promotion: @promotion %>
+     
+</div> 
+ 
 
-<%= render 'form', promotion: @promotion %>
-
-<%= link_to 'Show', @promotion %> |
-<%= link_to 'Back', promotions_path %>

@@ -1,4 +1,5 @@
-<%= form_with(model: product) do |form| %>
+
+<%= form_with(model: product,class:"row g-3") do |form| %>
   <% if product.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
@@ -10,37 +11,46 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_field :description %>
+  <div class="col-12">
+    <%= form.label :description, class:"form-label" %>
+    <%= form.text_field :description,class:"form-control", placeholder:"Name of product" %>
   </div>
-
-  <div class="field">
-    <%= form.label :stock %>
-    <%= form.number_field :stock %>
+  <div class="col-md-6" style="display:flex;justify-content: space-between;"> 
+    <div style="width:49%">
+      <%= form.label :stock , class:"form-label"%>
+      <%= form.number_field :stock ,class:"form-control", placeholder:"1,2,3...99,100"  %>
+    </div>
+    <div style="width:49%">
+      <%= form.label :price , class:"form-label"  %>
+      <%= form.number_field :price ,class:"form-control", placeholder:"R$ 0.00" %> 
+    </div>
   </div>
-  
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.number_field :price %>
+  <div class="col-md-2"> 
+    <%= form.label 'Bars Code',class:"form-label" %>  
+    <%= form.number_field :cod_bars, class:"form-control", placeholder:"Bars code of product" %> 
+  </div>
+  <div class="col-md-4"> 
+    <%= form.label 'Promotion',class:"form-label" %>  
+    
+    <select id="inputState" class="form-select">
+      <option selected>Choose...</option>
+      <% if @promotions %>
+        <% @promotions.each do |promotion|%> 
+          <option value="<%= promotion.id %>"><%= promotion.name %></option>
+        <% end %>
+      <% end %>
+    </select>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <%= form.label 'Products Active?', class:"form-check-label" %>
+      <%= form.check_box  :active, class:"form-check-input" %>
+    </div>
+  </div>
+  <div class="col-12" style="margin-bottom: 13px;"> 
+    <%= form.submit class:"btn btn-primary", style:"float:right"%>
+    <%= link_to 'Back', products_path, class:"btn btn-secondary"%>
   </div> 
 
-  <div class="field">
-    <%= form.label :cod_bars %>
-    <%= form.text_field :cod_bars %>
-  </div>
-
-  <div class="field">
-    <%= form.label :active %>
-    <%= form.text_field :active %>
-  </div>
+<% end %> 
   
-  <div class="field">
-    <%= form.label :active %>
-    <%= form.text_field :active %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
