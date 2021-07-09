@@ -10,18 +10,19 @@
       <tr>
           <th scope="col">#</th> 
           <th scope="col">Name</th>
-          <th scope="col">Active</th>
+          <th scope="col" style="text-align:right">Active</th>
+          <th scope="col" colspan="3" style="text-align:center">Actions</th>
       </tr>
     </thead>
     <tbody> 
       <% @promotions.each do |promotion| %>
         <tr>
           <td><%= promotion.id %></td>
-          <td><%= promotion.name %></td>
-          <td><%= promotion.active %></td>
-          <td><%= link_to 'Show', promotion %></td>
-          <td><%= link_to 'Edit', edit_promotion_path(promotion) %></td>
-          <td><%= link_to 'Destroy', promotion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= promotion.name %></td> 
+          <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if promotion.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
+          <td style="text-align:center"><%= link_to promotion do %><i class="fas fa-eye view-icon"></i><%end%></td>
+          <td style="text-align:center"><%= link_to edit_promotion_path(promotion) do %><i class="fas fa-pencil-alt edit-icon"></i><%end%></td>
+          <td style="text-align:center"><%= link_to promotion, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
         </tr>
       <% end %>
     </tbody>
@@ -30,4 +31,4 @@
   <br>
 
   <%= link_to 'New Promotion', new_promotion_path, class:"btn btn-primary", style:"float:right" %>
-</div>
+</div> 

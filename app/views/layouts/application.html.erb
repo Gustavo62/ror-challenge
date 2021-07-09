@@ -13,5 +13,24 @@
 
   <body>
     <%= yield %>
+    <% flash.each do |key, value| %>
+      <% case key%>
+      <% when 'notice' %>
+        <% key = "primary"%>
+      <% when 'info' %>
+        <% key = "success"%>
+      <% when 'alert' %>
+        <% key = "danger"%>
+      <% when 'warning' %>
+        <% key = "warning"%>
+      <% when 'danger' %>
+        <% key = "warning"%> 
+      <% else %>
+        <% key = "light"%>
+      <% end %>
+      <div class="alert alert-<%= key %> alert-dismissible fade show" role="alert" style="position: fixed;left: 0;bottom: 0;width: 100%;">  
+        <%= value %> 
+      </div>
+    <% end %>
   </body>
 </html>

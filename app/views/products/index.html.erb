@@ -11,7 +11,9 @@
           <th scope="col">#</th>
           <th scope="col">Product</th>
           <th scope="col">Amount</th>
-          <th scope="col">Status</th>
+          <th scope="col" style="text-align:right">Status</th> 
+          <th scope="col" style="text-align:right">Active</th>
+          <th scope="col" colspan="3" style="text-align:center">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -20,10 +22,17 @@
           <th scope="row"><%= product.id %></th>
           <td><%= product.description %></td>
           <td><%= product.stock %></td>
-          <td><%= product.active %></td>
-          <td><%= link_to 'Show', product %></td>
-          <td><%= link_to 'Edit', edit_product_path(product) %></td>
-          <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td style="text-align:right">
+            <% if product.stock > 0 %>  
+              <span class="badge bg-success">SALE</span>
+            <% else%>
+              <span class="badge bg-danger">SOLD</span>
+            <% end %>
+          </td> 
+          <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if product.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
+          <td style="text-align:center"><%= link_to product do %><i class="fas fa-eye view-icon"><% end %></i></td>
+          <td style="text-align:center"><%= link_to edit_product_path(product) do %><i class="fas fa-pencil-alt edit-icon"></i><% end %></td>
+          <td style="text-align:center"><%= link_to product, method: :delete, data: { confirm: 'Are you sure?' } do%><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
         </tr>
       <% end %>
     </tbody>

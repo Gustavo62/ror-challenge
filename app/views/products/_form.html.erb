@@ -1,3 +1,4 @@
+<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 
 <%= form_with(model: product,class:"row g-3") do |form| %>
   <% if product.errors.any? %>
@@ -22,17 +23,16 @@
     </div>
     <div style="width:49%">
       <%= form.label :price , class:"form-label"  %>
-      <%= form.number_field :price ,class:"form-control", placeholder:"R$ 0.00" %> 
+      <%= form.number_field :price ,class:"form-control", placeholder:"R$ 0.00",step:"any" %> 
     </div>
   </div>
-  <div class="col-md-2"> 
+  <div class="col-md-6"> 
     <%= form.label 'Bars Code',class:"form-label" %>  
     <%= form.number_field :cod_bars, class:"form-control", placeholder:"Bars code of product" %> 
   </div>
   <div class="col-md-4"> 
-    <%= form.label 'Promotion',class:"form-label" %>  
-    
-    <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select" %>
+    <%= form.label 'Promotion',class:"form-label" %>   
+    <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select", prompt: "Select something" %>
   </div>
   <div class="col-12">
     <div class="form-check">
@@ -46,4 +46,7 @@
   </div> 
 
 <% end %> 
-  
+
+<script>
+  document.querySelector('#product_promotion_id').classList.add("form-select");  
+</script>

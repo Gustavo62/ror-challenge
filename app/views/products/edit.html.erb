@@ -1,6 +1,9 @@
-<h1>Editing Product</h1>
-
-<%= render 'form', product: @product %>
-
-<%= link_to 'Show', @product %> |
-<%= link_to 'Back', products_path %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid"> 
+        <%= link_to "Stock's", root_path, class:"title" %>
+    </div>
+</nav>
+<div class="container">
+    <h1>Editing Product</h1> 
+    <%= render 'form', product: @product %> 
+</div> 

@@ -11,3 +11,11 @@ import '../js/bootstrap_js_files.js'
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+import "@fortawesome/fontawesome-free/css/all"
+
+require("jquery") 
+$('document').ready(function() {
+    setTimeout(function() {
+      $('.alert').slideUp();
+    }, 3000);
+  });

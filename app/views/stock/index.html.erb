@@ -51,26 +51,40 @@
             </tr>
         </tbody>
     </table>
-    <%= link_to products_path do %>
-        <button type="button" class="btn btn-success btn-l"> PRODUCTS </button>
-    <% end %>
+    <div class="nav-btns">
+        <%= link_to products_path, class:"btn-l" do %>
+            <button type="button" class="btn btn-success "> PRODUCTS </button>
+        <% end %>
 
-    <%= link_to promotions_path do %>
-        <button type="button" class="btn btn-primary btn-r"> PROMOTIONS </button>
-    <% end %>
+        <%= link_to promotions_path do %>
+            <button type="button" class="btn btn-primary btn-c"> NEW ORDER </button>
+        <% end %>
+
+        <%= link_to promotions_path, class:"btn-r" do %>
+            <button type="button" class="btn btn-primary"> PROMOTIONS </button>
+        <% end %>
+    </div>
 </div>
 <style>
 
-.btn-l{
+.btn-l{ 
     float: left;
-    position: fixed;
-    bottom: 11px;
-    left: 12px;
+    margin-left: 18px;
 }
-.btn-r{
-    float: left;
-    position: fixed;
+.btn-r{ 
+    float: right;
+    margin-right: 18px;
+}
+
+.btn-c{  
+}
+.nav-btns{ 
     bottom: 11px;
-    right: 12px;
+    position: fixed;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    text-align: center;
 }
 </style>

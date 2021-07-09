@@ -1,24 +1,51 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @product.description %>
-</p>
-
-<p>
-  <strong>Stock:</strong>
-  <%= @product.stock %>
-</p>
-
-<p>
-  <strong>Cod bars:</strong>
-  <%= @product.cod_bars %>
-</p>
-
-<p>
-  <strong>Active:</strong>
-  <%= @product.active %>
-</p>
-
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid"> 
+        <%= link_to "Stock's", root_path, class:"title" %>
+    </div>
+</nav>
+<div class="container"> 
+    <h1>Show Product</h1> 
+  <div class="col-12"> 
+    <label class="form-label">Name</label>
+    <input class="form-control" placeholder="<%= @product.description %>" readonly="readonly" >
+  </div> 
+  <br>
+  <div class="col-12" style="display:flex;justify-content: space-between;">
+    <div style="width:49%">
+      <label class="form-label">Stock</label>
+      <input class="form-control" placeholder="<%= @product.stock %>"  readonly="readonly" >
+    </div>
+    <div style="width:49%">
+      <label class="form-label">Price</label>
+      <input class="form-control" placeholder="<%= @product.price %>"  readonly="readonly" >
+    </div> 
+  </div>   
+  <br>
+  <div class="col-12">
+    <label class="form-label">Bars Code</label>
+    <input class="form-control" placeholder="<%= @product.cod_bars %>"  readonly="readonly" >
+  </div>  
+  <br>
+  <div class="col-12">
+    <label class="form-label">Promotion</label>
+    <% if @promotion%>
+      <input class="form-control" placeholder="<%= @promotion.name %>"  readonly="readonly" >
+    <% else %> 
+      <input class="form-control" placeholder="Promotion Has Expired"  readonly="readonly" >
+    <% end %>
+  </div>  
+  <br>
+  <div class="col-12">
+    <div class="form-check">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if @product.active == true %> style="pointer-events:none">
+        <label class="form-check-label" for="gridCheck">
+          product Active?
+        </label>
+      </div>
+    </div>
+  </div>  
+  <br><br>
+  <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary", style:"float:right"%> 
+  <%= link_to 'Back', products_path, class:"btn btn-secondary" %>
+</div>

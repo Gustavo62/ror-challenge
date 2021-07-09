@@ -8,6 +8,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
+    @promotion = Promotion.find(@product.promotion_id) if @product.promotion_id
   end
 
   # GET /products/new
