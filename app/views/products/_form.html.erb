@@ -32,14 +32,7 @@
   <div class="col-md-4"> 
     <%= form.label 'Promotion',class:"form-label" %>  
     
-    <select id="inputState" class="form-select">
-      <option selected>Choose...</option>
-      <% if @promotions %>
-        <% @promotions.each do |promotion|%> 
-          <option value="<%= promotion.id %>"><%= promotion.name %></option>
-        <% end %>
-      <% end %>
-    </select>
+    <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select" %>
   </div>
   <div class="col-12">
     <div class="form-check">

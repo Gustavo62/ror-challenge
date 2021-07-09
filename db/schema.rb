@@ -16,10 +16,12 @@ ActiveRecord::Schema.define(version: 2021_07_08_230655) do
     t.string "description"
     t.integer "stock"
     t.float "price"
-    t.integer "cod_bars"
+    t.string "cod_bars"
     t.boolean "active"
+    t.integer "promotion_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["promotion_id"], name: "index_products_on_promotion_id"
   end
 
   create_table "promotions", force: :cascade do |t|
@@ -34,12 +36,12 @@ ActiveRecord::Schema.define(version: 2021_07_08_230655) do
     t.integer "number_order"
     t.float "deliver_fee"
     t.float "total_price"
-    t.integer "product_id_id", null: false
+    t.integer "product_id", null: false
     t.integer "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["product_id_id"], name: "index_stocks_on_product_id_id"
+    t.index ["product_id"], name: "index_stocks_on_product_id"
   end
 
-  add_foreign_key "stocks", "product_ids"
+  add_foreign_key "stocks", "products"
 end

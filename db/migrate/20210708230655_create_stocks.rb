@@ -4,7 +4,7 @@ class CreateStocks < ActiveRecord::Migration[6.1]
       t.integer :number_order
       t.float :deliver_fee
       t.float :total_price
-      t.references :product_id, null: false, foreign_key: true
+      t.references :product, null: false, foreign_key: true
       t.integer :amount
 
       t.timestamps
