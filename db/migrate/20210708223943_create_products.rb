@@ -4,7 +4,7 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.string  :description
       t.integer :stock
       t.float   :price 
-      t.integer :cod_bars
+      t.string :cod_bars
       t.boolean :active
 
       t.timestamps
