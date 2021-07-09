@@ -5,8 +5,8 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.integer :stock
       t.float   :price 
       t.string :cod_bars
-      t.boolean :active
-
+      t.boolean :active 
+      t.references :promotion_id, foreign_key: true
       t.timestamps
     end
   end
