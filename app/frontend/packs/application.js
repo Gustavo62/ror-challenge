@@ -12,7 +12,7 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 import "@fortawesome/fontawesome-free/css/all"
-
+ 
 require("jquery") 
 $('document').ready(function() {
     setTimeout(function() {
