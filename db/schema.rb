@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2021_07_09_191001) do
     t.float "total_price"
     t.integer "product_id", null: false
     t.integer "amount"
+    t.string "origin"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_stocks_on_product_id"

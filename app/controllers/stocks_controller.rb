@@ -4,6 +4,19 @@ class StocksController < ApplicationController
   # GET /stocks or /stocks.json
   def index
     @stocks = Stock.all
+    @products = Product.where(active: true)
+    if params[:id] 
+      if params[:id] != ''
+        @stocks = Stock.where(number_order: params[:id])
+        if @stocks == nil 
+          @stocks = Stock.all 
+        end
+      else 
+        @stocks = Stock.all 
+      end
+    else 
+      @stocks = Stock.all 
+    end
   end
 
   # GET /stocks/1 or /stocks/1.json
@@ -13,7 +26,7 @@ class StocksController < ApplicationController
   # GET /stocks/new
   def new
     @stock = Stock.new 
-    @products = Product.where(active: true)
+    @products = Product.where(active: true) 
   end
 
   # GET /stocks/1/edit
@@ -22,7 +35,18 @@ class StocksController < ApplicationController
 
   # POST /stocks or /stocks.json
   def create
-    @stock = Stock.new(stock_params)
+    @stock = Stock.new(stock_params) 
+    respond_to do |format|
+      if @stock.save
+        @stock.number_order = @stock.created_at.strftime("%Y%d%m") + @stock.id.to_s
+        @stock.save
+        format.html { redirect_to stocks_url, notice: "Stock was successfully created." }
+        format.json { head :no_content }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @stock.errors, status: :unprocessable_entity }
+      end
+    end 
   end
 
   # PATCH/PUT /stocks/1 or /stocks/1.json
@@ -61,6 +85,6 @@ class StocksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def stock_params 
-      params.require(:stock).permit(:number_order, :deliver_fee , :total_price ,:product_id, :amount)
+      params.require(:stock).permit(:number_order, :deliver_fee , :total_price ,:product_id, :amount,:origin)
     end
 end

@@ -3,7 +3,7 @@
     <div class="container-fluid"> 
         <%= link_to "Stock's", root_path, class:"title" %>
         <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search">
+        <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search" name="id">
         <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
     </div>
@@ -19,36 +19,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">202007081</th>
-                <td>Pineaple</td>
-                <td>2</td>
-                <td>API</td>
-            </tr>
-            <tr>
-                <th scope="row">202007082</th>
-                <td>Aple</td>
-                <td>4</td>
-                <td>APP</td>
-            </tr>
-            <tr>
-                <th scope="row">202007082</th>
-                <td>Aple</td>
-                <td>4</td>
-                <td>APP</td>
-            </tr>
-            <tr>
-                <th scope="row">202007082</th>
-                <td>Aple</td>
-                <td>4</td>
-                <td>APP</td>
-            </tr>
-            <tr>
-                <th scope="row">202007082</th>
-                <td>Aple</td>
-                <td>4</td>
-                <td>APP</td>
-            </tr>
+            <% @stocks.each do |stock| %>
+                <tr>
+                    <th scope="row"><%= stock.number_order%></th>
+                    <td><%= (@products.find_by_id(stock.product_id)).description%></td>
+                    <td><%= stock.amount%></td>
+                    <td><%= stock.origin%></td>
+                </tr>
+            <% end %>
         </tbody>
     </table>
     <div class="nav-btns">
