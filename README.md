@@ -2,9 +2,9 @@
 
 step - by step for installing
 
-clone repository
-run -$ yarn
-run -$ rake webpacker:compile
-run -$ rake db:create
-run -$ rake db:migrate
-run -$ rails s
+clone repository <br>
+run -$ yarn <br>
+run -$ rake webpacker:compile <br>
+run -$ rake db:create <br>
+run -$ rake db:migrate <br>
+run -$ rails s <br>
