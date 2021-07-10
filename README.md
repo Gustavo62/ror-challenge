@@ -1,24 +1,10 @@
-# README
+# DOCUMENTATION
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+step - by step for installing
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+clone repository
+run -$ yarn
+run -$ rake webpacker:compile
+run -$ rake db:create
+run -$ rake db:migrate
+run -$ rails s
