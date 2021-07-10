@@ -1,5 +1,11 @@
-<h1>New Stock</h1>
-
-<%= render 'form', stock: @stock %>
-
-<%= link_to 'Back', stocks_path %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid"> 
+        <%= link_to "Stock's", root_path, class:"title" %>
+    </div>
+</nav>
+<div class="container">
+    <h1>Add Stock</h1> 
+    <%= render 'form', stock: @stock %> 
+</div>
+ 
+ 

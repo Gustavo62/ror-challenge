@@ -1,4 +1,4 @@
-<%= form_with(model: stock) do |form| %>
+<%= form_with(model: stock,class:"row g-3") do |form| %>
   <% if stock.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(stock.errors.count, "error") %> prohibited this stock from being saved:</h2>
@@ -9,9 +9,121 @@
         <% end %>
       </ul>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
+  <% end %> 
+  <div class="col-md-12"> 
+    <%= form.label 'Product',class:"form-label" %>   
+    <%= form.collection_select :promotion_id, @products, :id, :description, class:"form-select", prompt: "Select something" %>
   </div>
+  <div id="prod-details">
+    <div class="col-12" id="tab-prom" style="display:flex;justify-content: space-between;"> 
+      <div style="width:49%"> 
+        <label class="form-label" >Promotion</label>  
+        <input class="form-control" id="promotion-name" style="pointer-events:none;background: aliceblue;">  
+      </div>
+      <div style="width:49%"> 
+        <label class="form-label" >Details</label>  
+        <input class="form-control" id="promotion-min-amount" style="pointer-events:none;background: aliceblue;">  
+      </div>
+    </div>  
+    <br>
+    <div class="col-12" style="display:flex;justify-content: space-between;">
+      <div style="width:49%">
+        <%= form.label :amount, class:"form-label" %>
+        <%= form.number_field :amount,class:"form-control", placeholder:"Chose the amount", min:1,value:"1" %> 
+        <%= form.number_field :product_id,style:"display:none" %>
+        <%= form.number_field :total_price,style:"display:none" %>
+      </div> 
+      <div style="width:49%"> 
+        <label class="form-label" >Value of unit</label> 
+        <input class="form-control" id="value-unit-product" style="pointer-events:none;background: aliceblue;"> 
+      </div> 
+    </div> 
+    <br> 
+    <div style="width:49%">
+      <%= form.label :deliver_fee, class:"form-label" %>
+      <%= form.number_field :deliver_fee,class:"form-control", placeholder:"R$ 0,00" %>  
+    </div>
+    <hr>
+    <br>
+    <div style="display:flex;justify-content: space-between;">
+      <div style="width:49%">
+        <p style="font-size: 22px;font-weight: bold;">Total Value:</p>
+      </div>
+      <div style="width:49%">
+        <p style="font-size: 18px;font-size: 15px;">
+          <h5 style="text-align: center;"><span id="amount-size">0</span> x  R$ <span id="value-unit-product-note"></span> Unit.<br></h5>
+          <h5 style="text-align: center;">1 x R$ <span id="deliver-fee">0</span> Deliver.</h5>
+          <hr>
+          Sub'Total Price: <span id="sub-value-total" style="float: right;text-decoration: underline;"></span>
+          <hr>
+          <div id="promo note">
+            <h5 style="text-align: center;"><span id="value-promo"></span> promotion.</h5>
+          <hr>
+          </div>
+          Total Price: <span id="value-total" style="float: right;text-decoration: underline;"></span>
+          </p>
+      </div>
+    </div>
+  </div> 
+  <div class="col-12" style="margin-bottom: 13px;"> 
+    <%= form.submit class:"btn btn-primary", style:"float:right"%>
+    <%= link_to 'Back', stocks_path, class:"btn btn-secondary"%>
+  </div>  
 <% end %>
+<script> 
+  document.querySelector('#stock_promotion_id').classList.add("form-select");
+  document.getElementById("prod-details").style.display = "none";
+  var value_product;
+  var total_price_note;
+  var min_promo_amount;
+  $('#stock_promotion_id').on('change', function() { 
+    if(this.value != ""){
+      $.ajax({
+        url : "get_data",
+        type : 'post', 
+        data: { id: this.value},
+        success: function(data){
+                  value_product = parseInt(data.product.stock, 10); 
+                  document.getElementById("sub-value-total").innerHTML      = (parseInt(value_product)).toFixed(2);
+                  document.getElementById("stock_total_price").value    = (parseInt(value_product)).toFixed(2);
+                  document.getElementById("amount-size").innerHTML      = "1" ;
+                  document.getElementById("stock_amount").max           = parseInt(data.product.stock, 10); 
+                  document.getElementById("value-unit-product").value   = (parseInt(data.product.price)).toFixed(2);
+                  document.getElementById("stock_product_id").value     = data.product.id;
+                  document.getElementById("prod-details").style.display = "block"; 
+                  // note list details
+                  document.getElementById("value-unit-product-note").innerHTML = (parseInt(data.product.price)).toFixed(2);
+                  if(data.promotion){
+                    min_promo_amount = data.promotion.min_amount; 
+                    if(document.getElementById("amount-size").value > min_promo_amount){
+                      total_price_note                                    = (parseInt(value_product * document.getElementById("stock_amount").value)).toFixed(2);
+                      document.getElementById("value-promo").innerHTML    = "- R$" + total_price_note - document.getElementById("value-unit-product-note").value;
+                    }else{
+                      document.getElementById("value-promo").innerHTML    = "No has"
+                    };
+                    document.getElementById("promotion-name").value       = data.promotion.name;
+                    document.getElementById("promotion-min-amount").value = "Min amount " + data.promotion.min_amount;
+                  }else{
+                    document.getElementById("tab-prom").style.display     = "none";
+                  };
+                    
+                }
+      }); 
+    }
+    
+  });
+  $('#stock_amount').on('change', function() { 
+    document.getElementById("deliver-fee").innerHTML  = document.getElementById("stock_deliver_fee").value;
+    total_price_note = (parseInt(value_product * document.getElementById("stock_amount").value)).toFixed(2);
+    document.getElementById("sub-value-total").innerHTML  = total_price_note
+    document.getElementById("amount-size").innerHTML  = document.getElementById("stock_amount").value;
+    document.getElementById("stock_total_price").value = total_price_note
+    if(document.getElementById("stock_amount").value > min_promo_amount){
+      total_price_note - document.getElementById("value-unit-product-note").value;
+      document.getElementById("sub-value-total").innerHTML = total_price_note;
+    };
+  });
+  $('#stock_deliver_fee').on('change', function() { 
+    document.getElementById("deliver-fee").innerHTML  = (parseInt(document.getElementById("stock_deliver_fee").value)).toFixed(2);
+  });
+</script>

@@ -13,6 +13,7 @@ class StocksController < ApplicationController
   # GET /stocks/new
   def new
     @stock = Stock.new 
+    @products = Product.where(active: true)
   end
 
   # GET /stocks/1/edit
@@ -45,7 +46,13 @@ class StocksController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def get_data
+    @product = Product.find_by_id(params[:id])
+    @promotion = Promotion.find_by_id(@product.promotion_id) 
+    respond_to do |format|
+      format.json { render json: { :product => @product, :promotion => @promotion } }
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
