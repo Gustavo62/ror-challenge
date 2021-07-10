@@ -20,6 +20,10 @@
     <%= form.text_field :description,class:"form-control", placeholder:"Description for promotion" %>
   </div>  
   <div class="col-12">
+    <%= form.label :min_amount, class:"form-label" %>
+    <%= form.text_field :min_amount,class:"form-control", placeholder:"Number of min amount" %>
+  </div>  
+  <div class="col-12">
     <div class="form-check">
       <%= form.label 'Promotion Active?', class:"form-check-label" %>
       <%= form.check_box  :active, class:"form-check-input" %>

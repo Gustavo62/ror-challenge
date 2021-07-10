@@ -64,6 +64,6 @@ class PromotionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def promotion_params
-      params.require(:promotion).permit(:name, :description, :active)
+      params.require(:promotion).permit(:name, :description, :active, :min_amount)
     end
 end

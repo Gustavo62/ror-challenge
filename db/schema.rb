@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2021_07_09_191001) do
     t.string "name"
     t.string "description"
     t.boolean "active"
+    t.integer "min_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

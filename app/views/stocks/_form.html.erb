@@ -66,16 +66,19 @@
     </div>
   </div> 
   <div class="col-12" style="margin-bottom: 13px;"> 
-    <%= form.submit class:"btn btn-primary", style:"float:right"%>
+    <%= form.submit class:"btn btn-primary", style:"float:right", id:"submit"%>
     <%= link_to 'Back', stocks_path, class:"btn btn-secondary"%>
   </div>  
 <% end %>
 <script> 
   document.querySelector('#stock_promotion_id').classList.add("form-select");
   document.getElementById("prod-details").style.display = "none";
+  document.getElementById("submit").style.display = "none"; 
   var value_product;
   var total_price_note;
+  var sub_total_price_note;
   var min_promo_amount;
+  var deliver_fee;
   $('#stock_promotion_id').on('change', function() { 
     if(this.value != ""){
       $.ajax({
@@ -83,20 +86,21 @@
         type : 'post', 
         data: { id: this.value},
         success: function(data){
-                  value_product = parseInt(data.product.stock, 10); 
-                  document.getElementById("sub-value-total").innerHTML      = (parseInt(value_product)).toFixed(2);
-                  document.getElementById("stock_total_price").value    = (parseInt(value_product)).toFixed(2);
+                  value_product = parseFloat(data.product.price); 
+                  document.getElementById("sub-value-total").innerHTML      = (parseFloat(value_product)).toFixed(2);
+                  document.getElementById("stock_total_price").value    = (parseFloat(value_product)).toFixed(2);
                   document.getElementById("amount-size").innerHTML      = "1" ;
-                  document.getElementById("stock_amount").max           = parseInt(data.product.stock, 10); 
-                  document.getElementById("value-unit-product").value   = (parseInt(data.product.price)).toFixed(2);
+                  document.getElementById("stock_amount").max           = parseFloat(data.product.stock, 10); 
+                  document.getElementById("value-unit-product").value   = (parseFloat(data.product.price)).toFixed(2);
                   document.getElementById("stock_product_id").value     = data.product.id;
                   document.getElementById("prod-details").style.display = "block"; 
+                  document.getElementById("submit").style.display = "block";  
                   // note list details
-                  document.getElementById("value-unit-product-note").innerHTML = (parseInt(data.product.price)).toFixed(2);
+                  document.getElementById("value-unit-product-note").innerHTML = (parseFloat(data.product.price)).toFixed(2);
                   if(data.promotion){
                     min_promo_amount = data.promotion.min_amount; 
                     if(document.getElementById("amount-size").value > min_promo_amount){
-                      total_price_note                                    = (parseInt(value_product * document.getElementById("stock_amount").value)).toFixed(2);
+                      total_price_note                                    = (parseFloat(value_product * document.getElementById("stock_amount").value)).toFixed(2);
                       document.getElementById("value-promo").innerHTML    = "- R$" + total_price_note - document.getElementById("value-unit-product-note").value;
                     }else{
                       document.getElementById("value-promo").innerHTML    = "No has"
@@ -106,24 +110,34 @@
                   }else{
                     document.getElementById("tab-prom").style.display     = "none";
                   };
-                    
                 }
       }); 
     }
     
   });
   $('#stock_amount').on('change', function() { 
-    document.getElementById("deliver-fee").innerHTML  = document.getElementById("stock_deliver_fee").value;
-    total_price_note = (parseInt(value_product * document.getElementById("stock_amount").value)).toFixed(2);
-    document.getElementById("sub-value-total").innerHTML  = total_price_note
+    total_price_note = value_product + parseFloat(document.getElementById("stock_deliver_fee").value); 
+    
+    document.getElementById("sub-value-total").innerHTML  = (parseFloat(value_product)).toFixed(2);
+    value_product + parseFloat(document.getElementById("stock_deliver_fee").value);
+    
     document.getElementById("amount-size").innerHTML  = document.getElementById("stock_amount").value;
-    document.getElementById("stock_total_price").value = total_price_note
+    document.getElementById("stock_total_price").value = total_price_note;
     if(document.getElementById("stock_amount").value > min_promo_amount){
       total_price_note - document.getElementById("value-unit-product-note").value;
       document.getElementById("sub-value-total").innerHTML = total_price_note;
     };
   });
-  $('#stock_deliver_fee').on('change', function() { 
-    document.getElementById("deliver-fee").innerHTML  = (parseInt(document.getElementById("stock_deliver_fee").value)).toFixed(2);
+  $('#stock_deliver_fee').on('change', function() {  
+    deliver_fee = (parseFloat(document.getElementById("stock_deliver_fee").value)).toFixed(2);  
+    document.getElementById("deliver-fee").innerHTML  = deliver_fee;
+    sub_total_price_note = parseFloat(parseFloat(value_product) * parseInt(document.getElementById("stock_amount").value));
+    sub_total_price_note = (parseFloat(parseFloat(sub_total_price_note) + parseFloat(deliver_fee))).toFixed(2);
+    document.getElementById("sub-value-total").innerHTML  = sub_total_price_note;
+    if(document.getElementById("stock_amount").value > min_promo_amount){  
+      document.getElementById("value-total").innerHTML = parseFloat(sub_total_price_note) - parseFloat(value_product)
+    }else{ 
+      document.getElementById("value-total").innerHTML = sub_total_price_note
+    }
   });
 </script>
