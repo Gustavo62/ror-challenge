@@ -29,6 +29,7 @@
             <% end %>
         </tbody>
     </table>
+    <%= paginate @stocks %>
     <div class="nav-btns">
         <%= link_to products_path, class:"btn-l" do %>
             <button type="button" class="btn btn-success "> PRODUCTS </button>
@@ -41,8 +42,7 @@
         <%= link_to promotions_path, class:"btn-r" do %>
             <button type="button" class="btn btn-primary"> PROMOTIONS </button>
         <% end %>
-    </div>
-    
+    </div> 
 </div>
 <style>
 

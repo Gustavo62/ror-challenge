@@ -2,20 +2,24 @@ class StocksController < ApplicationController
   before_action :set_stock, only: %i[ show edit update destroy ]
 
   # GET /stocks or /stocks.json
-  def index
-    @stocks = Stock.all
-    @products = Product.where(active: true)
+  def index  
+    @per_pages = Stock.all.size
+    if @per_pages >= 5
+      @per_pages = 5
+    end 
+    @stocks = Stock.page(4).per(2)
+    @products = Product.all
     if params[:id] 
       if params[:id] != ''
         @stocks = Stock.where(number_order: params[:id])
         if @stocks == nil 
-          @stocks = Stock.all 
+          @stocks = Stock.all.page(@per_pages)
         end
       else 
-        @stocks = Stock.all 
+        @stocks = Stock.all.page(@per_pages)
       end
     else 
-      @stocks = Stock.all 
+      @stocks = Stock.page(params[:page]).per(5)
     end
   end
 
@@ -37,9 +41,8 @@ class StocksController < ApplicationController
   def create
     @stock = Stock.new(stock_params) 
     respond_to do |format|
-      if @stock.save
-        @stock.number_order = @stock.created_at.strftime("%Y%d%m") + @stock.id.to_s
-        @stock.save
+      if @stock.save 
+        atualization_bases(@stock)
         format.html { redirect_to stocks_url, notice: "Stock was successfully created." }
         format.json { head :no_content }
       else
@@ -77,7 +80,17 @@ class StocksController < ApplicationController
       format.json { render json: { :product => @product, :promotion => @promotion } }
     end
   end
-  private
+  def atualization_bases(object)
+    @stock.number_order = object.created_at.strftime("%Y%d%m") + object.id.to_s
+    @product = Product.find_by_id(object.product_id)
+    @product.stock = @product.stock - object.amount
+    if @product.stock == 0
+      @product.active = false
+    end
+    @product.save
+    @stock.save
+  end
+  private 
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
       @stock = Stock.find(params[:id])

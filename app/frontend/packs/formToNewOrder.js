@@ -1,8 +1,8 @@
-document.addEventListener("turbolinks:load", function() {
+window.onload = function(){
   var value_product;
   var total_price_note;
   var sub_total_price_note;
-  var min_promo_amount;
+  var min_promo_amount = 0;
   var deliver_fee; 
   var sub_value_total_html         = document.getElementById("sub-value-total");
   var stock_total_price_html       = document.getElementById("stock_total_price");
@@ -60,7 +60,8 @@ document.addEventListener("turbolinks:load", function() {
                     promo_note_html.style.display     = "block";
                     tab_prom_html.style.display       = "flex";
                     value_total_html.innerHTML        = sub_total_price_note;
-                  }else{
+                  }else{ 
+                    min_promo_amount = Infinity;
                     promo_note_html.style.display     = "none";
                     tab_prom_html.style.display       = "none";
                     if(isNaN(deliver_fee)){
@@ -133,4 +134,4 @@ document.addEventListener("turbolinks:load", function() {
       stock_total_price_html.value  = sub_total_price_note;
     }
   });
-});
+};
