@@ -45,8 +45,37 @@ module Api
                         end
                     end
                 end
-
-                
+                if @items_ids
+                    @items = Item.find(*@items_ids)
+                    @stock = Stock.new(deliver_fee: @deliver_fee,total_price: @total_price_order,origin: "API")
+                    if @stock.save
+                        atualization_stock(@stock) 
+                        @items.each do |item|
+                            @product    = Product.find_by_id(item.product_id)
+                            @promotion  = Promotion.find_by_id(@product.promotion_id)
+                            if @promotion
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "promotion": {
+                                        "id":           @promotion.id,
+                                        "name":         @promotion.name,
+                                        "description":  @promotion.description,
+                                        "min_amount":   @promotion.min_amount,
+                                    }
+                                }
+                            else
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                } 
+                            end
+                        end  
+                    end
+                end 
+                render json: {status: 'SUCCESS', order_number: @stock.number_order, deliver_fee:@stock.deliver_fee,total_price:@stock.total_price,items:@structurejson},status: :ok
                 #render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
                 #render json: {status: 'ERROR', message:'products not saved', items:msg},status: :unprocessable_entity 
 			end
@@ -58,15 +87,9 @@ module Api
                 end
                 @product.save
             end
-            def atualization_bases(stock,prod_id)
+            def atualization_stock(stock)
                 @stock = stock
                 @stock.number_order = @stock.created_at.strftime("%Y%d%m") + @stock.id.to_s
-                @product = Product.find_by_id(prod_id)
-                @product.stock = @product.stock - @stock.amount
-                if @product.stock == 0
-                  @product.active = false
-                end
-                @product.save
                 @stock.save
             end
             private
@@ -112,6 +135,6 @@ module Api
 		end
 	end
 end
-#Stock(id: , number_order: , deliver_fee: , total_price: , product_id: , amount: integer, origin: string)
+#Stock(id: , number_order: , deliver_fee: , total_price: , origin: string)
 #Promotion(id: , name: , description: , active: , min_amount: )
 #Product(id: , description: , stock: , price: , cod_bars: , active: , promotion_id: 

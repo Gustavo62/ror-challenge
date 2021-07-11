@@ -12,9 +12,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Product</th>
-                <th scope="col">Amount</th>
+                <th scope="col">#</th> 
+                <th scope="col">Price</th>
+                <th scope="col">Deliver</th>
                 <th scope="col">Method</th>
             </tr>
         </thead>
@@ -22,8 +22,8 @@
             <% @stocks.each do |stock| %>
                 <tr>
                     <th scope="row"><%= stock.number_order%></th>
-                    <td><%= (@products.find_by_id(stock.product_id)).description%></td>
-                    <td><%= stock.amount%></td>
+                    <td><%= stock.total_price%></td>
+                    <td><%= stock.deliver_fee%></td>
                     <td><%= stock.origin%></td>
                 </tr>
             <% end %>
