@@ -12,57 +12,56 @@ module Api
                 render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
 			end 
 
-            def create  
-                @product_ids = params[:product_id]
-                @product_size = 0
-                @product_ids.each do | prod_id |
-                    products  = Product.find_by_id(prod_id)
-                    promotion = Promotion.find_by_id(prod_id) 
-                    @amount_promo = 0
-                    @p_amount = params[:amount].to_i
-                    if promotion 
-                        @product_size = ( @p_amount / promotion.min_amount ) + @p_amount
+            def create   
+                @structurejson          = []
+                @items_ids              = []
+                @total_price_order      = 0
+                @items                  = params[:items]
+                @total_price_order      +=params[:deliver_fee].to_f
+                @items.each do | item |
+                    @deliver_fee        = params[:deliver_fee].to_f
+                    @origin             = params[:origin]
+                    @product_id         = item[:product_id].to_i
+                    @amount             = item[:amount].to_i
+                    @product_size       = 0
+                    @amount_promo       = 0
+                    @total_price        = 0
+                    @product            = Product.find_by_id(@product_id)
+                    @promotion          = Promotion.find_by_id(@product.promotion_id)
+                    if @promotion 
+                        @product_size   = ( @amount / @promotion.min_amount ) + @amount
+                        @amount_promo   = @amount / @promotion.min_amount 
+                        @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
+                    else    
+                        @product_size   = @amount  
+                        @total_price    = @amount * @product.price
                     end
-                    if products.stock >=  @product_size
-                        if promotion
-                            if @p_amount > promotion.min_amount
-                                @amount_promo = @p_amount / promotion.min_amount 
-                                params[:amount] = @p_amount + @amount_promo
-                                params[:total_price] = (((@p_amount * products.price) - (products.price * @amount_promo)) + params[:deliver_fee].to_f)
-                            else
-                                params[:total_price] = ((@p_amount * products.price) + params[:deliver_fee].to_f)
-                            end
-                        else
-                            params[:total_price] = ((@p_amount * products.price) + params[:deliver_fee].to_f)
+                    if @product.stock >=  @product_size 
+                        @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
+                        if @item.save
+                            @total_price_order  += @total_price
+                            @items_ids          << @item.id
+                            atualization_bases_v1(@item)
                         end
-                        stock = Stock.new(total_price: params[:total_price],amount: params[:amount],deliver_fee: params[:deliver_fee],origin: "API",product_id: prod_id)
-                        if stock.save 
-                            atualization_bases(stock)
-                            @id_order = stock.id 
-                            create_json("create")   
-                        end
-                    else 
-                        msg = []
-                        if promotion
-                            @msg_aux = " ,have #{@p_amount / promotion.min_amount} promotion's."
-                        else
-                            @msg_aux = "."
-                        end
-                        msg << {"ALERT": "Stock for this product is #{products.stock} and your order there is #{@product_size}#{@msg_aux}"} 
-                
-
-                        
                     end
                 end
+
                 
-                render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
-                render json: {status: 'ERROR', message:'products not saved', items:msg},status: :unprocessable_entity 
-                
+                #render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
+                #render json: {status: 'ERROR', message:'products not saved', items:msg},status: :unprocessable_entity 
 			end
-            def atualization_bases(object)
-                @stock = object
+            def atualization_bases_v1(item)
+                @product             = Product.find_by_id(item.product_id)
+                @product.stock      -= @product_size
+                if @product.stock == 0
+                  @product.active    = false
+                end
+                @product.save
+            end
+            def atualization_bases(stock,prod_id)
+                @stock = stock
                 @stock.number_order = @stock.created_at.strftime("%Y%d%m") + @stock.id.to_s
-                @product = Product.find_by_id(@stock.product_id)
+                @product = Product.find_by_id(prod_id)
                 @product.stock = @product.stock - @stock.amount
                 if @product.stock == 0
                   @product.active = false
@@ -88,33 +87,6 @@ module Api
                         @promotion = Promotion.find_by_id(product.promotion_id)
                         if @promotion
                             @structurejson << {
-                                "id":               product.id, 
-                                "price":            product.price,
-                                "description":      product.description,
-                                "stock":            product.stock, 
-                                "promotion": {
-                                    "id":           @promotion.id,
-                                    "name":         @promotion.name,
-                                    "description":  @promotion.description,
-                                    "min_amount":   @promotion.min_amount,
-                                }
-                                } 
-                        else
-                            @structurejson << {
-                                "id":               product.id, 
-                                "price":            product.price,
-                                "description":      product.description,
-                                "stock":            product.stock, 
-                            } 
-                        end
-                    end 
-                else
-                    @structurejson = []
-                    products.each do | product | 
-                        @promotion = Promotion.find_by_id(product.promotion_id)
-                        if @promotion
-                            @structurejson << {
-                                "order": order,
                                 "id":               product.id, 
                                 "price":            product.price,
                                 "description":      product.description,
