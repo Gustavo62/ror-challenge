@@ -58,6 +58,8 @@ module Api
                                     "id":               @product.id, 
                                     "price":            @product.price,
                                     "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
                                     "promotion": {
                                         "id":           @promotion.id,
                                         "name":         @promotion.name,
@@ -70,6 +72,8 @@ module Api
                                     "id":               @product.id, 
                                     "price":            @product.price,
                                     "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
                                 } 
                             end
                         end  
