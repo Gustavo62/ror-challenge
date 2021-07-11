@@ -29,7 +29,7 @@
             <% end %>
         </tbody>
     </table>
-    <%= paginate @stocks %>
+    <%= paginate @stocks, style:"margin-left: auto;margin-right: auto;width: fit-content;" %>
     <div class="nav-btns">
         <%= link_to products_path, class:"btn-l" do %>
             <button type="button" class="btn btn-success "> PRODUCTS </button>

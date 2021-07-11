@@ -17,3 +17,12 @@ body{
 .edit-icon{
     color:#009688;
 }
+
+.pagination{
+    display: flex      !important;
+    list-style: none   !important;
+    text-align: center !important;
+    margin-left: auto  !important;
+    width: fit-content !important;
+    margin-right: auto !important;
+}

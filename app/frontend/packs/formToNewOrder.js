@@ -1,4 +1,4 @@
-window.onload = function(){
+$(document).ready(function() {
   var value_product;
   var total_price_note;
   var sub_total_price_note;
@@ -134,4 +134,4 @@ window.onload = function(){
       stock_total_price_html.value  = sub_total_price_note;
     }
   });
-};
+});
