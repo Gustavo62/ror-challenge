@@ -18,34 +18,38 @@ module Api
                 @total_price_order      = 0
                 @items                  = params[:items]
                 @total_price_order      +=params[:deliver_fee].to_f
-                @items.each do | item |
-                    @deliver_fee        = params[:deliver_fee].to_f
-                    @origin             = params[:origin]
-                    @product_id         = item[:product_id].to_i
-                    @amount             = item[:amount].to_i
-                    @product_size       = 0
-                    @amount_promo       = 0
-                    @total_price        = 0
-                    @product            = Product.find_by_id(@product_id)
-                    @promotion          = Promotion.find_by_id(@product.promotion_id) 
-                    if @promotion 
-                        @product_size   = ( @amount / @promotion.min_amount ) + @amount
-                        @amount_promo   = @amount / @promotion.min_amount 
-                        @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
-                    else    
-                        @product_size   = @amount  
-                        @total_price    = @amount * @product.price
-                    end
-                    if @product.stock >=  @product_size 
-                        @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
-                        if @item.save
-                            @total_price_order  += @total_price
-                            @items_ids          << @item.id
-                            atualization_bases_v1(@item)
+                if @items != nil 
+                    @items.each do | item |
+                        @deliver_fee        = params[:deliver_fee].to_f
+                        @origin             = params[:origin]
+                        @product_id         = item[:product_id].to_i
+                        @amount             = item[:amount].to_i
+                        @product_size       = 0
+                        @amount_promo       = 0
+                        @total_price        = 0
+                        @product            = Product.find_by_id(@product_id)
+                        @promotion          = Promotion.find_by_id(@product.promotion_id) 
+                        if @promotion 
+                            @product_size   = ( @amount / @promotion.min_amount ) + @amount
+                            @amount_promo   = @amount / @promotion.min_amount 
+                            @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
+                        else    
+                            @product_size   = @amount  
+                            @total_price    = @amount * @product.price
+                        end
+                        if @product.stock >=  @product_size 
+                            @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
+                            if @item.save
+                                @total_price_order  += @total_price
+                                @items_ids          << @item.id
+                                atualization_bases_v1(@item)
+                            end
                         end
                     end
-                end
-                if @items_ids
+                else
+                    render json: {status: 'ERROR', message:'order no have products'},status: :unprocessable_entity 
+                end 
+                if @items_ids.size > 0
                     if @items_ids.size == 1 
                         @items = Item.where(id: @items_ids[0])
                     else 
@@ -56,6 +60,8 @@ module Api
                         atualization_stock(@stock) 
                         puts 
                         @items.each do |item|
+                            item.stock_id = @stock.id
+                            item.save
                             @product    = Product.find_by_id(item.product_id)
                             @promotion  = Promotion.find_by_id(@product.promotion_id)
                             if @promotion
@@ -83,10 +89,10 @@ module Api
                             end
                         end  
                     end
-                end 
-                render json: {status: 'SUCCESS', order_number: @stock.number_order, deliver_fee:@stock.deliver_fee,total_price:@stock.total_price,items:@structurejson},status: :ok
-                #render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
-                #render json: {status: 'ERROR', message:'products not saved', items:msg},status: :unprocessable_entity 
+                    render json: {status: 'SUCCESS', order_number: @stock.number_order, deliver_fee:@stock.deliver_fee,total_price:@stock.total_price,items:@structurejson},status: :ok
+                end
+                
+                
 			end
             def atualization_bases_v1(item)
                 @product             = Product.find_by_id(item.product_id)

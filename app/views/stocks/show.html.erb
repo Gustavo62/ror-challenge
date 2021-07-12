@@ -4,14 +4,94 @@
     </div>
 </nav>
 <div class="container"> 
-    <h1>Show Order</h1> 
-    
+    <h1>Show Order <div class="ord_numb">Number Order: <b><%= @stock.number_order %></b></div></h1> 
+    <div class="col-12" style="display:flex;justify-content: space-between;">
+        <div style="width:49%">
+            <label class="form-label">Deliver fee</label>
+            <input class="form-control" placeholder="<%= @stock.deliver_fee %>"  readonly="readonly" >
+        </div>
+        <div style="width:49%">
+            <label class="form-label">Total price</label>
+            <input class="form-control" placeholder="<%= @stock.total_price %>"  readonly="readonly" >
+        </div> 
+    </div> 
+    <br>
+    <div class="col-12">
+        <% @items.each do | item| %>
+            <div class="col-12" style="display:flex;justify-content: space-between;">
+                <div class="image_prod"> 
+                    <%= image_tag @products.find_by_id(item.product_id).try(:image_prod), size:"130x130" %>
+                </div>
+                <div style="width:87%" > 
+                    <% @products.where(id: item.product_id).each do | product | %>
+                        <div style="display:flex;justify-content: space-between;">
+                            <div style="width: 41.5%;">
+                                <div style="display:flex;justify-content: space-between;">
+                                    <div style="width: -moz-available;padding-right: 11px;">
+                                        <label class="form-label">Name</label>
+                                        <input class="form-control" placeholder="<%= product.description %>"  readonly="readonly" >
+                                    </div>
+                                    <div style="width: min-content;">
+                                        <label class="form-label">Amount</label>
+                                        <input class="form-control" placeholder="<%= item.amount %>"  readonly="readonly" >
+                                    </div>
+                                </div>
+                                <br>
+                                <div style="display:flex;justify-content: space-between;margin-top: -19px;">
+                                    <div style="width: 49%;">
+                                        <label class="form-label">Price Unit</label>
+                                        <input class="form-control" placeholder="<%= product.price %>"  readonly="readonly" >
+                                    </div>
+                                    <div style="width: 49%;">
+                                        <label class="form-label">Total Price</label>
+                                        <input class="form-control" placeholder="<%= product.price.to_f * item.amount.to_i %>"  readonly="readonly" >
+                                    </div>
+                                </div>
+                            </div>
+                            <% if item.promotion %>
+                                <% @promotions.where(id: product.promotion_id).each do | promotion | %>
+                                    <div style="width: 41.5%;">
+                                        <div style="display:flex;justify-content: space-between;">
+                                            <div style="width: -moz-available;padding-right: 11px;">
+                                                <label class="form-label">Name Promotion</label>
+                                                <input class="form-control" placeholder="<%= promotion.name %>"  readonly="readonly" >
+                                            </div>
+                                            <div style="width: 30%;">
+                                                <label class="form-label">Min Amount</label>
+                                                <input class="form-control" placeholder="<%= promotion.min_amount %>"  readonly="readonly" >
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div style="display:flex;justify-content: space-between;margin-top: -19px;">
+                                            <div style="width: 49%;">
+                                                <label class="form-label">Number of promotions</label>
+                                                <input class="form-control" placeholder="<%= product.price %>"  readonly="readonly" >
+                                            </div>
+                                            <div style="width: 49%;">
+                                                <label class="form-label">Total Price</label>
+                                                <input class="form-control" placeholder="<%= item.price %>"  readonly="readonly" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>  
+            </div> <br>
+        <% end %>
+    </div> 
     <div class="nav-btns">
         <%= link_to 'Edit', edit_stock_path(@stock), class:"btn btn-primary btn-r"%> 
         <%= link_to 'Back', stocks_path, class:"btn btn-secondary btn-l" %>
     </div>
 </div> 
-<style>
+<style> 
+.ord_numb{ 
+    float: right;
+    font-size: 20px;
+    padding-top: 25px;
+}
 .btn-l{ 
     float: left;
     margin-left: 81px;
@@ -39,5 +119,16 @@
   border-radius: 50%;
   padding-top: 22px;
   box-shadow: 0px 3px 8px #dadada;
+}
+.image_prod{
+    width: 9%;
+    background: #ffffff;
+    border: 1px solid gray;
+    width: 147px;
+    height: 147px;
+    padding: 7px;
+    box-shadow: 0px 3px 8px #dadada;
+    border-radius: 6px;
+
 }
 </style>
