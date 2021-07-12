@@ -29,6 +29,15 @@
   </table>
 
   <br>
-
-  <%= link_to 'New Promotion', new_promotion_path, class:"btn btn-primary", style:"float:right" %>
+  <div class="nav-btns"> 
+    <div class="container">
+      <%= link_to stocks_path, class:"btn-l" do %>
+        <button type="button" class="btn btn-info "> Home </button>
+      <% end %> 
+      <%= link_to new_promotion_path, class:"btn-r" do %>
+        <button type="button" class="btn btn-primary "> New Promotion </button>
+      <% end %>
+    </div>
+  </div> 
+  
 </div> 

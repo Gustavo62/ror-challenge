@@ -9,6 +9,7 @@
     </div>
 </nav>
 <div class="container">
+    <h1>List of Orders</h1>
     <table class="table">
         <thead>
             <tr>
@@ -23,8 +24,8 @@
             <% @stocks.each do |stock| %> 
                 <tr>
                     <th scope="row"><%= stock.number_order%></th>
-                    <td><%= stock.total_price%></td>
-                    <td><%= stock.deliver_fee%></td>
+                    <td><%= stock.total_price.round(2)%></td>
+                    <td><%= stock.deliver_fee.round(2)%></td>
                     <td><%= stock.origin%></td>
                     <td style="text-align:center"><%= link_to stock do %><i class="fas fa-eye view-icon"></i><% end %></td>
                 </tr> 
