@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 2021_07_12_010323) do
     t.integer "promotion_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["promotion_id"], name: "index_products_on_promotion_id"
   end
 
   create_table "promotions", force: :cascade do |t|

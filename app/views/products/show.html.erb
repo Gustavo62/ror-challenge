@@ -7,10 +7,10 @@
     <h1>Show Product</h1> 
   <div class="col-12" style="text-align: center;font-size: 20px;margin-bottom: 45px;"> 
     <div class="div_image">
-      <% if @product.image_prod %>
+      <% if @product.image_prod.attached?  %>
         <%= image_tag @product.image_prod, size:"100x100" %>
-      <% else %>
-        <%= image_tag "default_prod.png" %>
+      <% else %> 
+        <i class="fas fa-shopping-cart" style="font-size: 54px;padding: 22px;"></i>
       <% end %>
     </div>
     <br> 

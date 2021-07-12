@@ -6,7 +6,7 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.float   :price 
       t.string :cod_bars
       t.boolean :active 
-      t.references :promotion
+      t.integer :promotion_id
       t.timestamps
     end
   end

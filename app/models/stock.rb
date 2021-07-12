@@ -1,3 +1,2 @@
-class Stock < ApplicationRecord
-    
+class Stock < ApplicationRecord 
 end

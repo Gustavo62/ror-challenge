@@ -26,7 +26,11 @@
         <% @items.each do | item| %>
             <div class="col-12" style="display:flex;justify-content: space-between;">
                 <div class="image_prod"> 
-                    <%= image_tag @products.find_by_id(item.product_id).try(:image_prod), size:"130x130" %>
+                    <% if @products.find_by_id(item.product_id).image_prod.attached?%>
+                        <%= image_tag @products.find_by_id(item.product_id).try(:image_prod), size:"130x130" %>
+                    <% else %>
+                        <i class="fas fa-shopping-cart" style="font-size: 54px;padding: 32px;padding-top: 40px;"></i>
+                    <% end %>
                 </div>
                 <div style="width:87%;padding-left: 1%;" > 
                     <% @products.where(id: item.product_id).each do | product | %>

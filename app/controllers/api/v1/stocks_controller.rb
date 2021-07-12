@@ -28,10 +28,15 @@ module Api
                         @total_price        = 0
                         @product            = Product.find_by_id(@product_id)
                         @promotion          = Promotion.find_by_id(@product.promotion_id) 
-                        if @promotion  
+                        if @promotion 
                             @amount_promo   = @amount / @promotion.min_amount 
-                            @total_price    = (@amount - @amount_promo) * @product.price
-                            @has_prom       = true
+                            if @amount_promo >= 1
+                                @total_price    = (@amount - @amount_promo) * @product.price
+                                @has_prom       = true
+                            else 
+                                @total_price    = @amount * @product.price
+                                @has_prom       = false
+                            end
                         else     
                             @total_price    = @amount * @product.price
                             @has_prom       = false
