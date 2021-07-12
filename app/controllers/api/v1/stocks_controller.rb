@@ -27,21 +27,23 @@ module Api
                     @amount_promo       = 0
                     @total_price        = 0
                     @product            = Product.find_by_id(@product_id)
-                    @promotion          = Promotion.find_by_id(@product.promotion_id)
-                    if @promotion 
-                        @product_size   = ( @amount / @promotion.min_amount ) + @amount
-                        @amount_promo   = @amount / @promotion.min_amount 
-                        @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
-                    else    
-                        @product_size   = @amount  
-                        @total_price    = @amount * @product.price
-                    end
-                    if @product.stock >=  @product_size 
-                        @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
-                        if @item.save
-                            @total_price_order  += @total_price
-                            @items_ids          << @item.id
-                            atualization_bases_v1(@item)
+                    if @product
+                        @promotion          = Promotion.find_by_id(@product.promotion_id) 
+                        if @promotion 
+                            @product_size   = ( @amount / @promotion.min_amount ) + @amount
+                            @amount_promo   = @amount / @promotion.min_amount 
+                            @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
+                        else    
+                            @product_size   = @amount  
+                            @total_price    = @amount * @product.price
+                        end
+                        if @product.stock >=  @product_size 
+                            @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
+                            if @item.save
+                                @total_price_order  += @total_price
+                                @items_ids          << @item.id
+                                atualization_bases_v1(@item)
+                            end
                         end
                     end
                 end
@@ -51,30 +53,33 @@ module Api
                     if @stock.save
                         atualization_stock(@stock) 
                         @items.each do |item|
+                            puts item
                             @product    = Product.find_by_id(item.product_id)
-                            @promotion  = Promotion.find_by_id(@product.promotion_id)
-                            if @promotion
-                                @structurejson << {
-                                    "id":               @product.id, 
-                                    "price":            @product.price,
-                                    "name":             @product.description,
-                                    "amount":           item.amount,
-                                    "total":            item.price,
-                                    "promotion": {
-                                        "id":           @promotion.id,
-                                        "name":         @promotion.name,
-                                        "description":  @promotion.description,
-                                        "min_amount":   @promotion.min_amount,
+                            if @product
+                                @promotion  = Promotion.find_by_id(@product.promotion_id)
+                                if @promotion
+                                    @structurejson << {
+                                        "id":               @product.id, 
+                                        "price":            @product.price,
+                                        "name":             @product.description,
+                                        "amount":           item.amount,
+                                        "total":            item.price,
+                                        "promotion": {
+                                            "id":           @promotion.id,
+                                            "name":         @promotion.name,
+                                            "description":  @promotion.description,
+                                            "min_amount":   @promotion.min_amount,
+                                        }
                                     }
-                                }
-                            else
-                                @structurejson << {
-                                    "id":               @product.id, 
-                                    "price":            @product.price,
-                                    "name":             @product.description,
-                                    "amount":           item.amount,
-                                    "total":            item.price,
-                                } 
+                                else
+                                    @structurejson << {
+                                        "id":               @product.id, 
+                                        "price":            @product.price,
+                                        "name":             @product.description,
+                                        "amount":           item.amount,
+                                        "total":            item.price,
+                                    } 
+                                end
                             end
                         end  
                     end

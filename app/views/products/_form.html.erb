@@ -33,6 +33,10 @@
   <div class="col-md-4"> 
     <%= form.label 'Promotion',class:"form-label" %>   
     <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select", prompt: "Select something" %>
+  </div> 
+  <div class="mb-3">
+    <label for="formFile" class="form-label">Default file input example</label> 
+    <%= form.file_field :image_prod, class:"form-control", type:"file" %>
   </div>
   <div class="col-12">
     <div class="form-check">

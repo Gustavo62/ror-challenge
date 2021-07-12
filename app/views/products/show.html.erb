@@ -5,10 +5,17 @@
 </nav>
 <div class="container"> 
     <h1>Show Product</h1> 
-  <div class="col-12"> 
-    <label class="form-label">Name</label>
-    <input class="form-control" placeholder="<%= @product.description %>" readonly="readonly" >
-  </div> 
+  <div class="col-12" style="text-align: center;font-size: 20px;margin-bottom: 45px;"> 
+    <div class="div_image">
+      <% if @product.image_prod %>
+        <%= image_tag @product.image_prod, size:"100x100" %>
+      <% else %>
+        <%= image_tag "default_prod.png" %>
+      <% end %>
+    </div>
+    <br> 
+    <b><%= @product.description %><b>
+  </div>  
   <br>
   <div class="col-12" style="display:flex;justify-content: space-between;">
     <div style="width:49%">
@@ -46,6 +53,38 @@
     </div>
   </div>  
   <br><br>
-  <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary", style:"float:right"%> 
-  <%= link_to 'Back', products_path, class:"btn btn-secondary" %>
+  <div class="nav-btns">
+    <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary btn-r"%> 
+    <%= link_to 'Back', products_path, class:"btn btn-secondary btn-l" %>
+  </div>
 </div>
+<style>
+.btn-l{ 
+    float: left;
+    margin-left: 81px;
+}
+.btn-r{ 
+    float: right;
+    margin-right: 81px;
+} 
+.nav-btns{ 
+    bottom: 11px;
+    position: fixed;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    text-align: center;
+}
+.div_image{
+  background: #ffffff;
+  text-align: center;
+  width: 147px;
+  height: 147px;
+  border: 1px solid #e4e4e4;
+  margin: auto;
+  border-radius: 50%;
+  padding-top: 22px;
+  box-shadow: 0px 3px 8px #dadada;
+}
+</style>
