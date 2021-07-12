@@ -6,7 +6,7 @@ class CreateItems < ActiveRecord::Migration[6.1]
       t.integer :amount
       t.float :price
       t.boolean :promotion
-      t.boolean :promotion_amount
+      t.integer :promotion_amount
 
       t.timestamps
     end

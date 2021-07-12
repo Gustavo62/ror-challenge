@@ -6,15 +6,21 @@
 <div class="container"> 
     <h1>Show Order <div class="ord_numb">Number Order: <b><%= @stock.number_order %></b></div></h1> 
     <div class="col-12" style="display:flex;justify-content: space-between;">
-        <div style="width:49%">
+        <div style="width:33%">
             <label class="form-label">Deliver fee</label>
             <input class="form-control" placeholder="<%= @stock.deliver_fee %>"  readonly="readonly" >
         </div>
-        <div style="width:49%">
+        <div style="width:33%">
             <label class="form-label">Total price</label>
             <input class="form-control" placeholder="<%= @stock.total_price %>"  readonly="readonly" >
+        </div>
+        <div style="width:33%">
+            <label class="form-label">Created in</label>
+            <input class="form-control" placeholder="<%= @stock.created_at.strftime("%d/%m/%Y às %H:%M") %>"  readonly="readonly" >
         </div> 
     </div> 
+    <br>
+    <h1>List of Products</h1> 
     <br>
     <div class="col-12">
         <% @items.each do | item| %>
@@ -22,7 +28,7 @@
                 <div class="image_prod"> 
                     <%= image_tag @products.find_by_id(item.product_id).try(:image_prod), size:"130x130" %>
                 </div>
-                <div style="width:87%" > 
+                <div style="width:87%;padding-left: 1%;" > 
                     <% @products.where(id: item.product_id).each do | product | %>
                         <div style="display:flex;justify-content: space-between;">
                             <div style="width: 41.5%;">
@@ -50,7 +56,7 @@
                             </div>
                             <% if item.promotion %>
                                 <% @promotions.where(id: product.promotion_id).each do | promotion | %>
-                                    <div style="width: 41.5%;">
+                                    <div style="width: 57.5%">
                                         <div style="display:flex;justify-content: space-between;">
                                             <div style="width: -moz-available;padding-right: 11px;">
                                                 <label class="form-label">Name Promotion</label>
@@ -65,25 +71,32 @@
                                         <div style="display:flex;justify-content: space-between;margin-top: -19px;">
                                             <div style="width: 49%;">
                                                 <label class="form-label">Number of promotions</label>
-                                                <input class="form-control" placeholder="<%= product.promotion_amount %>"  readonly="readonly" >
+                                                <input class="form-control" placeholder="<%= item.promotion_amount %>"  readonly="readonly" >
                                             </div>
                                             <div style="width: 49%;">
-                                                <label class="form-label">Total Price</label>
-                                                <input class="form-control" placeholder="<%= item.price %>"  readonly="readonly" >
+                                                <label class="form-label">Discount price</label>
+                                                <input class="form-control" placeholder="<%= -1 * (item.price - (product.price.to_f * item.amount.to_i))%>"  readonly="readonly" >
                                             </div>
                                         </div>
                                     </div>
                                 <% end %>
-                            </div>
-                        <% end %>
+                            <% end %>
+                        </div> 
+                        <div style="margin-left: -16%;margin-top: 1%;">
+                            <label class="form-label">Bars Code</label>
+                            <input class="form-control" placeholder="<%= product.cod_bars %>"  readonly="readonly" >
+                        </div>
                     <% end %>
                 </div>  
-            </div> <br>
+            </div> 
+            <br>
         <% end %>
     </div> 
-    <div class="nav-btns">
-        <%= link_to 'Edit', edit_stock_path(@stock), class:"btn btn-primary btn-r"%> 
-        <%= link_to 'Back', stocks_path, class:"btn btn-secondary btn-l" %>
+    <div class="nav-btns"> 
+        <div class="container">
+            <%= link_to 'Edit', edit_stock_path(@stock), class:"btn btn-primary btn-r"%> 
+            <%= link_to 'Back', stocks_path, class:"btn btn-secondary btn-l" %>
+        </div>
     </div>
 </div> 
 <style> 
@@ -92,23 +105,7 @@
     font-size: 20px;
     padding-top: 25px;
 }
-.btn-l{ 
-    float: left;
-    margin-left: 81px;
-}
-.btn-r{ 
-    float: right;
-    margin-right: 81px;
-} 
-.nav-btns{ 
-    bottom: 11px;
-    position: fixed;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    text-align: center;
-}
+
 .div_image{
   background: #ffffff;
   text-align: center;
@@ -123,7 +120,7 @@
 .image_prod{
     width: 9%;
     background: #ffffff;
-    border: 1px solid gray;
+    border: 1px solid #e4e4e4;
     width: 147px;
     height: 147px;
     padding: 7px;

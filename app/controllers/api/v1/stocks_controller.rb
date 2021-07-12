@@ -23,22 +23,21 @@ module Api
                         @deliver_fee        = params[:deliver_fee].to_f
                         @origin             = params[:origin]
                         @product_id         = item[:product_id].to_i
-                        @amount             = item[:amount].to_i
-                        @product_size       = 0
+                        @amount             = item[:amount].to_i 
                         @amount_promo       = 0
                         @total_price        = 0
                         @product            = Product.find_by_id(@product_id)
                         @promotion          = Promotion.find_by_id(@product.promotion_id) 
-                        if @promotion 
-                            @product_size   = ( @amount / @promotion.min_amount ) + @amount
+                        if @promotion  
                             @amount_promo   = @amount / @promotion.min_amount 
-                            @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
-                        else    
-                            @product_size   = @amount  
+                            @total_price    = (@amount - @amount_promo) * @product.price
+                            @has_prom       = true
+                        else     
                             @total_price    = @amount * @product.price
+                            @has_prom       = false
                         end
-                        if @product.stock >=  @product_size 
-                            @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
+                        if @product.stock >=  @amount
+                            @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price,promotion_amount: @amount_promo, promotion: @has_prom)
                             if @item.save
                                 @total_price_order  += @total_price
                                 @items_ids          << @item.id
@@ -71,6 +70,7 @@ module Api
                                     "name":             @product.description,
                                     "amount":           item.amount,
                                     "total":            item.price,
+                                    "created":          item.created_at, 
                                     "promotion": {
                                         "id":           @promotion.id,
                                         "name":         @promotion.name,
@@ -85,6 +85,7 @@ module Api
                                     "name":             @product.description,
                                     "amount":           item.amount,
                                     "total":            item.price,
+                                    "created":          item.created_at, 
                                 } 
                             end
                         end  
@@ -96,7 +97,7 @@ module Api
 			end
             def atualization_bases_v1(item)
                 @product             = Product.find_by_id(item.product_id)
-                @product.stock      -= @product_size
+                @product.stock      -= @amount
                 if @product.stock == 0
                   @product.active    = false
                 end

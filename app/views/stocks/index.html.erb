@@ -32,32 +32,16 @@
         </tbody>
     </table>
     <%= paginate @stocks, style:"margin-left: auto;margin-right: auto;width: fit-content;" %>
-    <div class="nav-btns">
-        <%= link_to products_path, class:"btn-l" do %>
-            <button type="button" class="btn btn-success "> PRODUCTS </button>
-        <% end %> 
-        <%= link_to promotions_path, class:"btn-r" do %>
-            <button type="button" class="btn btn-primary"> PROMOTIONS </button>
-        <% end %>
+    <div class="nav-btns"> 
+        <div class="container">
+            <%= link_to products_path, class:"btn-l" do %>
+                <button type="button" class="btn btn-success "> PRODUCTS </button>
+            <% end %> 
+            <%= link_to promotions_path, class:"btn-r" do %>
+                <button type="button" class="btn btn-primary"> PROMOTIONS </button>
+            <% end %>
+        </div>
     </div> 
 </div>
-<style>
-
-.btn-l{ 
-    float: left;
-    margin-left: 81px;
-}
-.btn-r{ 
-    float: right;
-    margin-right: 81px;
-} 
-.nav-btns{ 
-    bottom: 11px;
-    position: fixed;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    text-align: center;
-}
+<style> 
 </style>

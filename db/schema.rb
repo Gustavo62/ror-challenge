@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 2021_07_12_010323) do
     t.integer "stock_id"
     t.integer "amount"
     t.float "price"
+    t.boolean "promotion"
+    t.integer "promotion_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_items_on_product_id"

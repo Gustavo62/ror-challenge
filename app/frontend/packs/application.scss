@@ -25,3 +25,20 @@ body{
     width: fit-content !important;
     margin-right: auto !important;
 }
+.btn-l{ 
+    float: left;
+    margin-left: 0px;
+}
+.btn-r{ 
+    float: right;
+    margin-right: 0px;
+} 
+.nav-btns{ 
+    bottom: 11px;
+    position: fixed;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    text-align: center;
+}

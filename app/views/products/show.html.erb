@@ -54,28 +54,13 @@
   </div>  
   <br><br>
   <div class="nav-btns">
-    <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary btn-r"%> 
-    <%= link_to 'Back', products_path, class:"btn btn-secondary btn-l" %>
+    <div class="container">
+      <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary btn-r"%> 
+      <%= link_to 'Back', products_path, class:"btn btn-secondary btn-l" %>
+    </div>
   </div>
 </div>
-<style>
-.btn-l{ 
-    float: left;
-    margin-left: 81px;
-}
-.btn-r{ 
-    float: right;
-    margin-right: 81px;
-} 
-.nav-btns{ 
-    bottom: 11px;
-    position: fixed;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    text-align: center;
-}
+<style> 
 .div_image{
   background: #ffffff;
   text-align: center;
