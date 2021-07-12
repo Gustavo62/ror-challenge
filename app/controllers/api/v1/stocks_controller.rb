@@ -27,59 +27,59 @@ module Api
                     @amount_promo       = 0
                     @total_price        = 0
                     @product            = Product.find_by_id(@product_id)
-                    if @product
-                        @promotion          = Promotion.find_by_id(@product.promotion_id) 
-                        if @promotion 
-                            @product_size   = ( @amount / @promotion.min_amount ) + @amount
-                            @amount_promo   = @amount / @promotion.min_amount 
-                            @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
-                        else    
-                            @product_size   = @amount  
-                            @total_price    = @amount * @product.price
-                        end
-                        if @product.stock >=  @product_size 
-                            @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
-                            if @item.save
-                                @total_price_order  += @total_price
-                                @items_ids          << @item.id
-                                atualization_bases_v1(@item)
-                            end
+                    @promotion          = Promotion.find_by_id(@product.promotion_id) 
+                    if @promotion 
+                        @product_size   = ( @amount / @promotion.min_amount ) + @amount
+                        @amount_promo   = @amount / @promotion.min_amount 
+                        @total_price    = ((@amount * @product.price) - (@amount_promo * @product.price))
+                    else    
+                        @product_size   = @amount  
+                        @total_price    = @amount * @product.price
+                    end
+                    if @product.stock >=  @product_size 
+                        @item = Item.new(product_id: @product.id,amount: @amount, price: @total_price)
+                        if @item.save
+                            @total_price_order  += @total_price
+                            @items_ids          << @item.id
+                            atualization_bases_v1(@item)
                         end
                     end
                 end
                 if @items_ids
-                    @items = Item.find(*@items_ids)
+                    if @items_ids.size == 1 
+                        @items = Item.where(id: @items_ids[0])
+                    else 
+                        @items = Item.find(*@items_ids)
+                    end
                     @stock = Stock.new(deliver_fee: @deliver_fee,total_price: @total_price_order,origin: "API")
                     if @stock.save
                         atualization_stock(@stock) 
+                        puts 
                         @items.each do |item|
-                            puts item
                             @product    = Product.find_by_id(item.product_id)
-                            if @product
-                                @promotion  = Promotion.find_by_id(@product.promotion_id)
-                                if @promotion
-                                    @structurejson << {
-                                        "id":               @product.id, 
-                                        "price":            @product.price,
-                                        "name":             @product.description,
-                                        "amount":           item.amount,
-                                        "total":            item.price,
-                                        "promotion": {
-                                            "id":           @promotion.id,
-                                            "name":         @promotion.name,
-                                            "description":  @promotion.description,
-                                            "min_amount":   @promotion.min_amount,
-                                        }
+                            @promotion  = Promotion.find_by_id(@product.promotion_id)
+                            if @promotion
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
+                                    "promotion": {
+                                        "id":           @promotion.id,
+                                        "name":         @promotion.name,
+                                        "description":  @promotion.description,
+                                        "min_amount":   @promotion.min_amount,
                                     }
-                                else
-                                    @structurejson << {
-                                        "id":               @product.id, 
-                                        "price":            @product.price,
-                                        "name":             @product.description,
-                                        "amount":           item.amount,
-                                        "total":            item.price,
-                                    } 
-                                end
+                                }
+                            else
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
+                                } 
                             end
                         end  
                     end
