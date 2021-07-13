@@ -9,15 +9,15 @@
     </div>
 </nav>
 <div class="container">
-    <h1>List of Orders</h1>
+    <h1><%= I18n.t 'activerecord.attributes.stock.name_index'%></h1>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th> 
-                <th scope="col">Price</th>
-                <th scope="col">Deliver</th>
-                <th scope="col">Method</th>
-                <th scope="col" style="width: 7%;">Actions</th>
+                <th scope="col"><%= I18n.t 'activerecord.attributes.stock.price'%></th>
+                <th scope="col"><%= I18n.t 'activerecord.attributes.stock.deliver_fee'%></th>
+                <th scope="col"><%= I18n.t 'activerecord.attributes.stock.method'%></th>
+                <th scope="col" style="width: 7%;"><%= I18n.t 'actions.actions'%></th>
             </tr>
         </thead>
         <tbody>
@@ -36,10 +36,10 @@
     <div class="nav-btns"> 
         <div class="container">
             <%= link_to products_path, class:"btn-l" do %>
-                <button type="button" class="btn btn-success "> PRODUCTS </button>
+                <button type="button" class="btn btn-success "> <%= I18n.t 'activerecord.models.product.other'%> </button>
             <% end %> 
             <%= link_to promotions_path, class:"btn-r" do %>
-                <button type="button" class="btn btn-primary"> PROMOTIONS </button>
+                <button type="button" class="btn btn-primary"> <%= I18n.t 'activerecord.models.promotion.other'%> </button>
             <% end %>
         </div>
     </div> 

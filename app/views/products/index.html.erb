@@ -32,7 +32,7 @@
           <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if product.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
           <td style="text-align:center"><%= link_to product do %><i class="fas fa-eye view-icon"></i><% end %></td>
           <td style="text-align:center"><%= link_to edit_product_path(product) do %><i class="fas fa-pencil-alt edit-icon"></i><% end %></td>
-          <td style="text-align:center"><%= link_to product, method: :delete, data: { confirm: 'Are you sure?' } do%><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
+          <td style="text-align:center"><%= link_to product, method: :delete, data: { confirm: "#{I18n.t 'actions.confirm'}" } do%><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
         </tr>
       <% end %>
     </tbody>

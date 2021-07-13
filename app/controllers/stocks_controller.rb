@@ -3,8 +3,7 @@ class StocksController < ApplicationController
 
   # GET /stocks or /stocks.json
   def index   
-    @per_pages = 5
-    @stocks = Stock.page(4).per(2)
+    @per_pages = 5 
     @products = Product.all
     if params[:id]  
       if params[:id] != ''
@@ -16,7 +15,7 @@ class StocksController < ApplicationController
         @stocks = Stock.page(params[:page]).per(@per_pages)
       end
     else 
-      @stocks = Stock.page(params[:page]).per(@per_pages)
+      @stocks = Stock.order(created_at: :desc).page(params[:page]).per(@per_pages)
     end
   end
   def show 

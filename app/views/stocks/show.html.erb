@@ -4,23 +4,23 @@
     </div>
 </nav>
 <div class="container"> 
-    <h1>Show Order <div class="ord_numb">Number Order: <b><%= @stock.number_order %></b></div></h1> 
+    <h1><%= I18n.t 'actions.show'%> <%= I18n.t 'activerecord.models.stock.one'%><div class="ord_numb"><%= I18n.t 'activerecord.attributes.stock.number_order'%> <b><%= @stock.number_order %></b></div></h1> 
     <div class="col-12" style="display:flex;justify-content: space-between;">
         <div style="width:33%">
-            <label class="form-label">Deliver fee</label>
+            <label class="form-label"><%= I18n.t 'activerecord.attributes.stock.deliver_fee'%></label>
             <input class="form-control" placeholder="R$ <%= @stock.deliver_fee.round(2) %>"  readonly="readonly" >
         </div>
         <div style="width:33%">
-            <label class="form-label">Total price</label>
+            <label class="form-label"><%= I18n.t 'activerecord.attributes.stock.price'%></label>
             <input class="form-control" placeholder="R$ <%= @stock.total_price.round(2) %>"  readonly="readonly" >
         </div>
         <div style="width:33%">
-            <label class="form-label">Created in</label>
+            <label class="form-label"><%= I18n.t 'activerecord.attributes.stock.created'%></label>
             <input class="form-control" placeholder="<%= @stock.created_at.strftime("%d/%m/%Y às %H:%M") %>"  readonly="readonly" >
         </div> 
     </div> 
     <br>
-    <h1>List of Products</h1> 
+    <h1><%= I18n.t 'activerecord.attributes.stock.list_products'%></h1> 
     <br>
     <div class="col-12" style="margin-bottom: 78px;">
         <% @count_item = 1 %>
@@ -40,22 +40,22 @@
                             <div style="width: 41.5%;">
                                 <div style="display:flex;justify-content: space-between;">
                                     <div style="width: -moz-available;padding-right: 11px;width: -webkit-fill-available;margin-left: -39%;">
-                                        <label class="form-label">Name</label>
+                                        <label class="form-label"><%= I18n.t 'activerecord.attributes.product.description_field'%></label>
                                         <input class="form-control" placeholder="<%= product.description %>"  readonly="readonly" >
                                     </div>
                                     <div style="width: min-content;">
-                                        <label class="form-label">Amount</label>
+                                        <label class="form-label"><%= I18n.t 'activerecord.attributes.product.amount'%></label>
                                         <input class="form-control" placeholder="<%= item.amount %>"  readonly="readonly" >
                                     </div>
                                 </div>
                                 <br>
                                 <div style="display:flex;justify-content: space-between;margin-top: -19px;">
                                     <div style="width: -webkit-fill-available;padding-right: 2.3%;margin-left: -4.9%;width: -moz-available;">
-                                        <label class="form-label">Price Unit</label>
+                                        <label class="form-label"><%= I18n.t 'activerecord.attributes.product.price_unit'%></label>
                                         <input class="form-control" placeholder="R$ <%= product.price.round(2) %>"  readonly="readonly" >
                                     </div>
                                     <div style="width: 49%;">
-                                        <label class="form-label">Total Price</label>
+                                        <label class="form-label"><%= I18n.t 'activerecord.attributes.stock.total_price'%></label>
                                         <input class="form-control" placeholder="R$ <%= product.price.to_f.round(2) * item.amount.to_i %>"  readonly="readonly" >
                                     </div>
                                 </div>
@@ -65,22 +65,22 @@
                                     <div style="width: 57.5%">
                                         <div style="display:flex;justify-content: space-between;">
                                             <div style="width: -moz-available;padding-right: 11px;width: -webkit-fill-available;">
-                                                <label class="form-label">Name Promotion</label>
+                                                <label class="form-label"><%= I18n.t 'activerecord.attributes.promotion.name'%></label>
                                                 <input class="form-control" placeholder="<%= promotion.name %>"  readonly="readonly" >
                                             </div>
-                                            <div style="width: 30%;">
-                                                <label class="form-label">Min Amount</label>
+                                            <div style="width: 40%;">
+                                                <label class="form-label"><%= I18n.t 'activerecord.attributes.promotion.min_amount'%></label>
                                                 <input class="form-control" placeholder="<%= promotion.min_amount %>"  readonly="readonly" >
                                             </div>
                                         </div>
                                         <br>
                                         <div style="display:flex;justify-content: space-between;margin-top: -19px;">
                                             <div style="width: 49%;">
-                                                <label class="form-label">Number of promotions</label>
+                                                <label class="form-label"><%= I18n.t 'activerecord.attributes.promotion.promotion_amount'%></label>
                                                 <input class="form-control" placeholder="<%= item.promotion_amount %>"  readonly="readonly" >
                                             </div>
                                             <div style="width: 49%;">
-                                                <label class="form-label">Discount price</label>
+                                                <label class="form-label"><%= I18n.t 'activerecord.attributes.promotion.discoint_price'%></label>
                                                 <input class="form-control" placeholder="R$ <%= (-1 * (item.price - (product.price.to_f * item.amount.to_i))).round(2)%>"  readonly="readonly" >
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                             <% end %>
                         </div> 
                         <div style="margin-left: -2%;margin-top: 1%;">
-                            <label class="form-label">Bars Code</label>
+                            <label class="form-label"><%= I18n.t 'activerecord.attributes.product.cod_bars'%></label>
                             <input class="form-control" placeholder="<%= product.cod_bars %>"  readonly="readonly" >
                         </div>
                     <% end %>
@@ -101,8 +101,8 @@
     </div> 
     <div class="nav-btns"> 
         <div class="container">
-            <%= link_to 'Edit', edit_stock_path(@stock), class:"btn btn-primary btn-r"%> 
-            <%= link_to 'Back', stocks_path, class:"btn btn-secondary btn-l" %>
+            <%= link_to "#{I18n.t 'actions.edit'}", edit_stock_path(@stock), class:"btn btn-primary btn-r"%> 
+            <%= link_to "#{I18n.t 'actions.back'}", stocks_path, class:"btn btn-secondary btn-l" %>
         </div>
     </div>
 </div> 

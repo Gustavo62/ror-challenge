@@ -4,14 +4,14 @@
     </div>
 </nav>
 <div class="container">
-  <h1>Promotions</h1>
+  <h1><%= I18n.t 'activerecord.models.promotion.one'%></h1>
   <table class="table">
     <thead>
       <tr>
           <th scope="col">#</th> 
-          <th scope="col">Name</th>
-          <th scope="col" style="text-align:right">Active</th>
-          <th scope="col" colspan="3" style="text-align:center">Actions</th>
+          <th scope="col"><%= I18n.t 'activerecord.attributes.promotion.description_field'%></th>
+          <th scope="col" style="text-align:right"><%= I18n.t 'actions.active?'%></th>
+          <th scope="col" colspan="3" style="text-align:center"><%= I18n.t 'actions.actions'%></th>
       </tr>
     </thead>
     <tbody> 
@@ -22,7 +22,7 @@
           <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if promotion.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
           <td style="text-align:center"><%= link_to promotion do %><i class="fas fa-eye view-icon"></i><%end%></td>
           <td style="text-align:center"><%= link_to edit_promotion_path(promotion) do %><i class="fas fa-pencil-alt edit-icon"></i><%end%></td>
-          <td style="text-align:center"><%= link_to promotion, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
+          <td style="text-align:center"><%= link_to promotion, method: :delete, data: { confirm: "#{I18n.t 'actions.confirm'}" } do %><i class="fas fa-trash-alt trash-icon"></i><%end%></td>
         </tr>
       <% end %>
     </tbody>
@@ -32,10 +32,10 @@
   <div class="nav-btns"> 
     <div class="container">
       <%= link_to stocks_path, class:"btn-l" do %>
-        <button type="button" class="btn btn-info "> Home </button>
+        <button type="button" class="btn btn-info "> <%= I18n.t 'actions.home'%> </button>
       <% end %> 
       <%= link_to new_promotion_path, class:"btn-r" do %>
-        <button type="button" class="btn btn-primary "> New Promotion </button>
+        <button type="button" class="btn btn-primary "><%= I18n.t 'actions.new'%> <%= I18n.t 'activerecord.models.promotion.one'%> </button>
       <% end %>
     </div>
   </div> 

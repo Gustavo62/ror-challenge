@@ -4,7 +4,7 @@
     </div>
 </nav>
 <div class="container">
-    <h1>Editing Promotion</h1> 
+    <h1><%= I18n.t 'actions.edit'%> <%= I18n.t 'activerecord.models.promotion.one'%></h1> 
     <%= render 'form', promotion: @promotion %>
      
 </div> 

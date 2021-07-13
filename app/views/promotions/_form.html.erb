@@ -12,25 +12,25 @@
   <% end %>
   <div class="col-12">
     <%= form.label :name, class:"form-label" %>
-    <%= form.text_field :name,class:"form-control", placeholder:"Name of promotion" %>
+    <%= form.text_field :name,class:"form-control",placeholder: "#{I18n.t 'activerecord.attributes.promotion.name_placeholder'}"  %>
   </div> 
   
   <div class="col-12">
     <%= form.label :description, class:"form-label" %>
-    <%= form.text_field :description,class:"form-control", placeholder:"Description for promotion" %>
+    <%= form.text_field :description,class:"form-control",placeholder: "#{I18n.t 'activerecord.attributes.promotion.description_placeholder'}"%>
   </div>  
   <div class="col-12">
     <%= form.label :min_amount, class:"form-label" %>
-    <%= form.text_field :min_amount,class:"form-control", placeholder:"Number of min amount" %>
+    <%= form.text_field :min_amount,class:"form-control", placeholder: "#{I18n.t 'activerecord.attributes.promotion.min_amount_placeholder'}" %>
   </div>  
   <div class="col-12">
     <div class="form-check">
-      <%= form.label 'Promotion Active?', class:"form-check-label" %>
+      <%= form.label I18n.t 'activerecord.attributes.promotion.active', class:"form-check-label" %>
       <%= form.check_box  :active, class:"form-check-input" %>
     </div>
   </div> 
   <div class="col-12" style="margin-bottom: 13px;"> 
     <%= form.submit class:"btn btn-primary", style:"float:right"%>
-    <%= link_to 'Back', promotions_path, class:"btn btn-secondary"%>
+    <%= link_to "#{I18n.t 'actions.back'}", promotions_path, class:"btn btn-secondary"%>
   </div> 
 <% end %>
