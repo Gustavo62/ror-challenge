@@ -4,7 +4,7 @@
     </div>
 </nav>
 <div class="container"> 
-    <h1>Show Product</h1> 
+    <h1><%= I18n.t 'actions.show'%> <%= I18n.t 'activerecord.attributes.product.promotion_id'%></h1> 
   <div class="col-12" style="text-align: center;font-size: 20px;margin-bottom: 45px;"> 
     <div class="div_image">
       <% if @product.image_prod.attached?  %>
@@ -19,22 +19,22 @@
   <br>
   <div class="col-12" style="display:flex;justify-content: space-between;">
     <div style="width:49%">
-      <label class="form-label">Stock</label>
+      <label class="form-label"><%= I18n.t 'activerecord.attributes.product.stock'%></label>
       <input class="form-control" placeholder="<%= @product.stock %>"  readonly="readonly" >
     </div>
     <div style="width:49%">
-      <label class="form-label">Price</label>
+      <label class="form-label"><%= I18n.t 'activerecord.attributes.product.price'%></label>
       <input class="form-control" placeholder="<%= @product.price %>"  readonly="readonly" >
     </div> 
   </div>   
   <br>
   <div class="col-12">
-    <label class="form-label">Bars Code</label>
+    <label class="form-label"><%= I18n.t 'activerecord.attributes.product.cod_bars'%></label>
     <input class="form-control" placeholder="<%= @product.cod_bars %>"  readonly="readonly" >
   </div>  
   <br>
   <div class="col-12">
-    <label class="form-label">Promotion</label>
+    <label class="form-label"><%= I18n.t 'activerecord.attributes.product.promotion_id'%></label>
     <% if @promotion%>
       <input class="form-control" placeholder="<%= @promotion.name %>"  readonly="readonly" >
     <% else %> 
@@ -47,7 +47,7 @@
       <div class="form-check">
         <input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if @product.active == true %> style="pointer-events:none">
         <label class="form-check-label" for="gridCheck">
-          product Active?
+          <%= I18n.t 'activerecord.attributes.product.active'%>
         </label>
       </div>
     </div>
@@ -55,8 +55,8 @@
   <br><br>
   <div class="nav-btns">
     <div class="container">
-      <%= link_to 'Edit', edit_product_path(@product), class:"btn btn-primary btn-r"%> 
-      <%= link_to 'Back', products_path, class:"btn btn-secondary btn-l" %>
+      <%= link_to "#{ I18n.t 'actions.edit' } ", edit_product_path(@product), class:"btn btn-primary btn-r"%> 
+      <%= link_to "#{ I18n.t 'actions.back' } ", products_path, class:"btn btn-secondary btn-l" %>
     </div>
   </div>
 </div>

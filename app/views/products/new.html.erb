@@ -4,6 +4,7 @@
     </div>
 </nav>
 <div class="container">
-    <h1>Add Product</h1> 
+    <h1><%= I18n.t 'activerecord.attributes.product.product_add'%></h1> 
+    
     <%= render 'form', product: @product %> 
-</div>
+</div> 

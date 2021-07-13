@@ -14,7 +14,7 @@
   <% end %>
   <div class="col-12">
     <%= form.label :description, class:"form-label" %>
-    <%= form.text_field :description,class:"form-control", placeholder:"Name of product" %>
+    <%= form.text_field :description,class:"form-control",placeholder: "#{I18n.t 'activerecord.attributes.product.description_field'}" %>
   </div>
   <div class="col-md-6" style="display:flex;justify-content: space-between;"> 
     <div style="width:49%">
@@ -27,26 +27,26 @@
     </div>
   </div>
   <div class="col-md-6"> 
-    <%= form.label 'Bars Code',class:"form-label" %>  
-    <%= form.number_field :cod_bars, class:"form-control", placeholder:"Bars code of product" %> 
+    <%= form.label :cod_bars , class:"form-label"  %>  
+    <%= form.number_field :cod_bars, class:"form-control",placeholder: "#{I18n.t 'activerecord.attributes.product.cod_bars_field'}" %> 
   </div>
   <div class="col-md-4"> 
-    <%= form.label 'Promotion',class:"form-label" %>   
-    <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select", prompt: "Select something" %>
+    <%= form.label :promotion_id , class:"form-label"  %>   
+    <%= form.collection_select :promotion_id, @promotions, :id, :name, class:"form-select",prompt: "#{I18n.t 'activerecord.attributes.product.promotion_id_field'}"%>
   </div> 
   <div class="mb-3">
-    <label for="formFile" class="form-label">Default file input example</label> 
+    <%= form.label :image_prod , class:"form-label"  %>
     <%= form.file_field :image_prod, class:"form-control", type:"file" %>
   </div>
   <div class="col-12">
     <div class="form-check">
-      <%= form.label 'Products Active?', class:"form-check-label" %>
+    <%= form.label :active , class:"form-check-label"  %> 
       <%= form.check_box  :active, class:"form-check-input" %>
     </div>
   </div>
   <div class="col-12" style="margin-bottom: 13px;"> 
     <%= form.submit class:"btn btn-primary", style:"float:right"%>
-    <%= link_to 'Back', products_path, class:"btn btn-secondary"%>
+    <%= link_to "#{I18n.t 'actions.back'}", products_path, class:"btn btn-secondary"%>
   </div> 
 
 <% end %> 

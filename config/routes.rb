@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :eras
   resources :stocks
   resources :promotions
   resources :products

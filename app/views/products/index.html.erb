@@ -4,16 +4,16 @@
     </div>
 </nav>
 <div class="container">
-  <h1>Products</h1>
+  <h1><%= I18n.t 'activerecord.models.product.other'%></h1>
   <table class="table">
     <thead>
       <tr>
           <th scope="col">#</th>
-          <th scope="col">Product</th>
-          <th scope="col">Amount</th>
-          <th scope="col" style="text-align:right">Status</th> 
-          <th scope="col" style="text-align:right">Active</th>
-          <th scope="col" colspan="3" style="text-align:center">Actions</th>
+          <th scope="col"><%= I18n.t 'activerecord.models.product.one'%></th>
+          <th scope="col"><%= I18n.t 'activerecord.attributes.product.amount'%></th>
+          <th scope="col" style="text-align:right"><%= I18n.t 'activerecord.attributes.product.status'%></th> 
+          <th scope="col" style="text-align:right"><%= I18n.t 'activerecord.attributes.product.active?'%></th>
+          <th scope="col" colspan="3" style="text-align:center"><%= I18n.t 'actions.actions'%></th>
       </tr>
     </thead>
     <tbody>
@@ -24,9 +24,9 @@
           <td><%= product.stock %></td>
           <td style="text-align:right">
             <% if product.stock > 0 %>  
-              <span class="badge bg-success">SALE</span>
+              <span class="badge bg-success"><%= I18n.t 'activerecord.attributes.product.sale'%></span>
             <% else%>
-              <span class="badge bg-danger">SOLD</span>
+              <span class="badge bg-danger"><%= I18n.t 'activerecord.attributes.product.sold'%></span>
             <% end %>
           </td> 
           <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if product.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
@@ -41,10 +41,10 @@
   <div class="nav-btns"> 
     <div class="container">
       <%= link_to stocks_path, class:"btn-l" do %>
-        <button type="button" class="btn btn-info "> Home </button>
+        <button type="button" class="btn btn-info "><%= I18n.t 'actions.home'%></button>
       <% end %> 
       <%= link_to new_product_path, class:"btn-r" do %>
-        <button type="button" class="btn btn-primary"> New Product </button>
+        <button type="button" class="btn btn-primary"><%= I18n.t 'actions.new'%> <%= I18n.t 'activerecord.models.product.one'%></button>
       <% end %>
     </div>
   </div> 
