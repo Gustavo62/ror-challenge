@@ -1,17 +1,44 @@
 module Api
 	module V1
-		class StocksController < ApplicationController   
+		class StocksController < ApplicationController    
             skip_before_action :verify_authenticity_token
             def index 
                 create_json("index") 
                 render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
             end 
-
-            def show
-				create_json("show")  
-                render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
+            def edit
+                set_stock
+                if @stock
+                    create_json("edit")
+                    #################
+                    @stock.deliver_fee = params[:deliver_fee].tof if @stock.deliver_fee != params[:deliver_fee].tof
+                    @structurejson          = [] 
+                    @items_recipe_param     = []
+                    params[:items].map { |item| @items_recipe_param << item[:product_id]}  
+                    @items                  = Item.where(stock_id: @stock.id)
+                    @products               = Product.where(id: @items.map(&:product_id))
+                    @items_recipe_param.each do | item |
+                        
+                    end
+                    render json: {status: 'SUCCESS', message:'edit'},status: :ok
+                else
+                    render json: {status: 'ERROR', message:'That order not exist on aplication'},status: :ok
+                end
 			end 
-
+            def show
+                if params[:id]
+                    set_stock
+                    if @stock
+                        create_json("show_order")
+                        render json: {status: 'SUCCESS', order_number: @stock.number_order, deliver_fee:@stock.deliver_fee,total_price:@stock.total_price,create_at:@stock.created_at.strftime('%d-%m-%Y %H:%M'),order:@structurejson},status: :ok
+                    else
+                        render json: {status: 'ERROR', message:'That order not send for api'},status: :ok
+                    end
+                else
+                    create_json("show")  
+                    render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
+                end
+			end 
             def create   
                 @structurejson          = []
                 @items_ids              = []
@@ -66,40 +93,15 @@ module Api
                         @items.each do |item|
                             item.stock_id = @stock.id
                             item.save
-                            @product    = Product.find_by_id(item.product_id)
-                            @promotion  = Promotion.find_by_id(@product.promotion_id)
-                            if @promotion
-                                @structurejson << {
-                                    "id":               @product.id, 
-                                    "price":            @product.price,
-                                    "name":             @product.description,
-                                    "amount":           item.amount,
-                                    "total":            item.price,
-                                    "created":          item.created_at, 
-                                    "promotion": {
-                                        "id":           @promotion.id,
-                                        "name":         @promotion.name,
-                                        "description":  @promotion.description,
-                                        "min_amount":   @promotion.min_amount,
-                                    }
-                                }
-                            else
-                                @structurejson << {
-                                    "id":               @product.id, 
-                                    "price":            @product.price,
-                                    "name":             @product.description,
-                                    "amount":           item.amount,
-                                    "total":            item.price,
-                                    "created":          item.created_at, 
-                                } 
-                            end
                         end  
+                        create_json("create")
                     end
                     render json: {status: 'SUCCESS', order_number: @stock.number_order, deliver_fee:@stock.deliver_fee,total_price:@stock.total_price,items:@structurejson},status: :ok
+                else
+                    render json: {status: 'ERROR', message:'No have products in stock'},status: :unprocessable_entity 
                 end
-                
-                
 			end
+
             def atualization_bases_v1(item)
                 @product             = Product.find_by_id(item.product_id)
                 @product.stock      -= @amount
@@ -108,22 +110,31 @@ module Api
                 end
                 @product.save
             end
+
             def atualization_stock(stock)
                 @stock = stock
                 @stock.number_order = @stock.created_at.strftime("%Y%d%m") + @stock.id.to_s
                 @stock.save
             end
-            private
+             
 
+            private ####################################### 
+            
+            def set_stock
+                @stock = Stock.where(number_order: params[:id]).take
+            end
             def create_json(method)
                 case method 
                 when "index"  
                     products = Product.where(stock: 1..Float::INFINITY,active: true)
                 when "show"
                     products = Product.where(id: params[:id])
+                when "show_order" 
+                    @items = Item.where(stock_id: @stock.id)
+                    products = Product.where(id: params[:id])
                 when "create" 
-                    order = Stock.find_by_id(@id_order) 
-                    products = Product.where(id: order.product_id)
+                    @items = Item.where(stock_id: @stock.id)
+                    products = Product.where(id: params[:id]) 
                 end
                 if method == 'index' or method == 'show'
                     @structurejson = []
@@ -151,6 +162,49 @@ module Api
                             } 
                         end
                     end 
+                end
+                if method == "show_order" or method ==  "create"
+                    @structurejson = [] 
+                    @items.each do |item| 
+                        @product    = Product.find_by_id(item.product_id)
+                        @promotion  = Promotion.find_by_id(@product.promotion_id)
+                        if @promotion
+                            if item.amount >= @promotion.min_amount
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
+                                    "created":          item.created_at, 
+                                    "promotion": {
+                                        "id":           @promotion.id,
+                                        "name":         @promotion.name,
+                                        "description":  @promotion.description,
+                                        "min_amount":   @promotion.min_amount,
+                                    }
+                                }
+                            else
+                                @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
+                                    "created":          item.created_at, 
+                                } 
+                            end
+                        else
+                            @structurejson << {
+                                    "id":               @product.id, 
+                                    "price":            @product.price,
+                                    "name":             @product.description,
+                                    "amount":           item.amount,
+                                    "total":            item.price,
+                                    "created":          item.created_at, 
+                                } 
+                        end 
+                    end  
                 end
             end
 		end
