@@ -6,25 +6,76 @@ module Api
                 create_json("index") 
                 render json: {status: 'SUCCESS', message:'products loaded', items:@structurejson},status: :ok
             end 
-            def edit
-                set_stock
-                if @stock
-                    create_json("edit")
-                    #################
-                    @stock.deliver_fee = params[:deliver_fee].tof if @stock.deliver_fee != params[:deliver_fee].tof
-                    @structurejson          = [] 
-                    @items_recipe_param     = []
-                    params[:items].map { |item| @items_recipe_param << item[:product_id]}  
-                    @items                  = Item.where(stock_id: @stock.id)
-                    @products               = Product.where(id: @items.map(&:product_id))
-                    @items_recipe_param.each do | item |
-                        
-                    end
-                    render json: {status: 'SUCCESS', message:'edit'},status: :ok
-                else
-                    render json: {status: 'ERROR', message:'That order not exist on aplication'},status: :ok
-                end
-			end 
+            ################################# edit-block #################################
+            #def edit
+            #    set_stock
+            #    if @stock
+            #        create_json("edit") 
+            #        @structurejson          = [] 
+            #        @items_recipe_params    = params[:items] 
+            #        @items                  = Item.where(stock_id: @stock.id)
+            #        @products               = Product.where(id: @items.map(&:product_id))
+            #        @items_recipe_params.each do | item | 
+            #            @item               = Item.find(item[:id])
+            #            if item[:product_id] == @item.product_id
+            #                if item[:amount] == item[:amount]
+            #                    # nenhum parametro mudou,  verifc entrega
+            #                    @stock.deliver_fee      = params[:deliver_fee].to_f if @stock.deliver_fee != params[:deliver_fee].to_f
+            #                    @stock.save             = if @stock.deliver_fee != params[:deliver_fee].to_f
+            #                else
+            #                    atualization_item(item,"amount!=")
+            #                end
+            #            else
+            #                if item[:amount] == item[:amount] 
+            #                else 
+            #                end
+            #            end
+            #
+            #        end
+            #        render json: {status: 'SUCCESS', message:'edit'},status: :ok
+            #    else
+            #        render json: {status: 'ERROR', message:'That order not exist on aplication'},status: :ok
+            #    end
+			#end 
+            #def atualization_item(item, action) 
+            #    @product = Product.find(item[:id])
+            #    calc(item, action) 
+            #end
+            #
+            #def calc(item, action) 
+            #    @item = Item.find(item[:id])
+            #    @product_id         = item[:product_id].to_i 
+            #    @amount             = item[:amount].to_i 
+            #    @amount_promo       = 0
+            #    @total_price        = 0
+            #    @product            = Product.find_by_id(@product_id)
+            #    @promotion          = Promotion.find_by_id(@product.promotion_id) 
+            #    if @promotion 
+            #        @amount_promo   = @amount / @promotion.min_amount 
+            #        if @amount_promo >= 1
+            #            @total_price    = (@amount - @amount_promo) * @product.price
+            #            @has_prom       = true
+            #        else 
+            #            @total_price    = @amount * @product.price
+            #            @has_prom       = false
+            #        end
+            #    else     
+            #        @total_price    = @amount * @product.price
+            #        @has_prom       = false
+            #    end
+            #    if @product.stock >=  @amount
+            #        @item.product_id        = @product.id
+            #        @item.amount            = @amount
+            #        @item.price             = @total_price
+            #        @item.promotion_amount  = @amount_promo
+            #        @item.promotion         = @has_prom
+            #        if @item.save
+            #            @total_price_order  += @total_price
+            #            atualization_bases_v1(@item)
+            #        end
+            #    end
+            #end
+            ################################## edit-block #################################
             def show
                 if params[:id]
                     set_stock
