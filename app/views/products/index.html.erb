@@ -22,12 +22,14 @@
           <th scope="row"><%= product.id %></th>
           <td><%= product.description %></td>
           <td><%= product.stock %></td>
-          <td style="text-align:right">
+          <td style="text-align:right"> 
+          <% if product.stock %> 
             <% if product.stock > 0 %>  
               <span class="badge bg-success"><%= I18n.t 'activerecord.attributes.product.sale'%></span>
             <% else%>
               <span class="badge bg-danger"><%= I18n.t 'activerecord.attributes.product.sold'%></span>
             <% end %>
+          <% end %>
           </td> 
           <td style="text-align:right"><input class="form-check-input" type="checkbox" id="gridCheck" <%= 'checked' if product.active == true %> style="pointer-events:none;margin-right: 16px;"></td>
           <td style="text-align:center"><%= link_to product do %><i class="fas fa-eye view-icon"></i><% end %></td>
